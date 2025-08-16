@@ -72,7 +72,7 @@ if (! class_exists('TaForms')) {
     {
 
       // Init action
-      do_action('Chat_Help_Pro_init');
+      do_action('Ta_Forms_init');
 
       add_action('after_setup_theme', array('ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms', 'setup'));
       add_action('init', array('ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms', 'setup'));
@@ -215,7 +215,7 @@ if (! class_exists('TaForms')) {
 
       $path     = '';
       $file     = ltrim($file, '/');
-      $override = apply_filters('Chat_Help_Pro_override', 'ta-forms-override');
+      $override = apply_filters('Ta_Forms_override', 'ta-forms-override');
 
       if (file_exists(get_parent_theme_file_path($override . '/' . $file))) {
         $path = get_parent_theme_file_path($override . '/' . $file);
@@ -279,7 +279,7 @@ if (! class_exists('TaForms')) {
       self::include_plugin_file('Classes/TaFormsMetabox.php');
 
       // Include all framework fields
-      $fields = apply_filters('Chat_Help_Pro_fields', array(
+      $fields = apply_filters('Ta_Forms_fields', array(
         'accordion',
         'background',
         'backup',
@@ -333,7 +333,7 @@ if (! class_exists('TaForms')) {
 
       if (! empty($fields)) {
         foreach ($fields as $field) {
-          if (! class_exists('Chat_Help_Pro_Field_' . $field) && class_exists('Chat_Help_Pro_Fields')) {
+          if (! class_exists('Ta_Forms_Field_' . $field) && class_exists('Ta_Forms_Fields')) {
             self::include_plugin_file('fields/' . $field . '/' . $field . '.php');
           }
         }
@@ -439,7 +439,7 @@ if (! class_exists('TaForms')) {
         }
       }
 
-      if (! apply_filters('Chat_Help_Pro_enqueue_assets', self::$enqueue)) {
+      if (! apply_filters('Ta_Forms_enqueue_assets', self::$enqueue)) {
         return;
       }
 
@@ -468,8 +468,8 @@ if (! class_exists('TaForms')) {
       wp_enqueue_script('ta-forms', self::include_plugin_url('assets/js/main' . $min . '.js'), array('ta-forms-plugins'), self::$version, true);
 
       // Main variables
-      wp_localize_script('ta-forms', 'Chat_Help_Pro_vars', array(
-        'color_palette'     => apply_filters('Chat_Help_Pro_color_palette', array()),
+      wp_localize_script('ta-forms', 'Ta_Forms_vars', array(
+        'color_palette'     => apply_filters('Ta_Forms_color_palette', array()),
         'i18n'              => array(
           'confirm'         => esc_html__('Are you sure?', 'ta-forms'),
           'typing_text'     => esc_html__('Please enter %s or more characters', 'ta-forms'),
@@ -484,7 +484,7 @@ if (! class_exists('TaForms')) {
       if (! empty(self::$fields)) {
         foreach (self::$fields as $field) {
           if (! empty($field['type'])) {
-            $classname = 'Chat_Help_Pro_Field_' . $field['type'];
+            $classname = 'Ta_Forms_Field_' . $field['type'];
             if (class_exists($classname) && method_exists($classname, 'enqueue')) {
               $instance = new $classname($field);
               if (method_exists($classname, 'enqueue')) {
@@ -496,7 +496,7 @@ if (! class_exists('TaForms')) {
         }
       }
 
-      do_action('Chat_Help_Pro_enqueue');
+      do_action('Ta_Forms_enqueue');
     }
 
     // Add typography enqueue styles to front page
@@ -546,7 +546,7 @@ if (! class_exists('TaForms')) {
     public static function add_admin_body_class($classes)
     {
 
-      if (apply_filters('Chat_Help_Pro_fa4', false)) {
+      if (apply_filters('Ta_Forms_fa4', false)) {
         $classes .= 'ta-forms-fa5-shims';
       }
 
@@ -644,7 +644,7 @@ if (! class_exists('TaForms')) {
         $value = (! isset($value) && isset($field['default'])) ? $field['default'] : $value;
         $value = (isset($field['value'])) ? $field['value'] : $value;
 
-        $classname = 'Chat_Help_Pro_Field_' . $field_type;
+        $classname = 'Ta_Forms_Field_' . $field_type;
 
         if (class_exists($classname)) {
           $instance = new $classname($field, $value, $unique, $where, $parent);

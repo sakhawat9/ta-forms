@@ -13,7 +13,7 @@
 use ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms;
 
 if (! class_exists('TaFormsOptions')) {
-  class TaFormsOptions extends Chat_Help_Pro_Abstract
+  class TaFormsOptions extends Ta_Forms_Abstract
   {
 
     // constans
@@ -99,8 +99,8 @@ if (! class_exists('TaFormsOptions')) {
     {
 
       $this->unique   = $key;
-      $this->args     = apply_filters("Chat_Help_Pro_{$this->unique}_args", wp_parse_args($params['args'], $this->args), $this);
-      $this->sections = apply_filters("Chat_Help_Pro_{$this->unique}_sections", $params['sections'], $this);
+      $this->args     = apply_filters("Ta_Forms_{$this->unique}_args", wp_parse_args($params['args'], $this->args), $this);
+      $this->sections = apply_filters("Ta_Forms_{$this->unique}_sections", $params['sections'], $this);
 
       // run only is admin panel options, avoid performance loss
       $this->pre_tabs     = $this->pre_tabs($this->sections);
@@ -113,7 +113,7 @@ if (! class_exists('TaFormsOptions')) {
 
       add_action('admin_menu', array($this, 'add_admin_menu'));
       add_action('admin_bar_menu', array($this, 'add_admin_bar_menu'), $this->args['admin_bar_menu_priority']);
-      add_action('wp_ajax_Chat_Help_Pro_' . $this->unique . '_ajax_save', array($this, 'ajax_save'));
+      add_action('wp_ajax_Ta_Forms_' . $this->unique . '_ajax_save', array($this, 'ajax_save'));
 
       if ($this->args['database'] === 'network' && ! empty($this->args['show_in_network'])) {
         add_action('network_admin_menu', array($this, 'add_admin_menu'));
@@ -213,21 +213,21 @@ if (! class_exists('TaFormsOptions')) {
 
       // Set variables.
       $data      = array();
-      $noncekey  = 'Chat_Help_Pro_options_nonce' . $this->unique;
+      $noncekey  = 'Ta_Forms_options_nonce' . $this->unique;
       $nonce     = (! empty($response[$noncekey])) ? $response[$noncekey] : '';
       $options   = (! empty($response[$this->unique])) ? $response[$this->unique] : array();
-      $transient = (! empty($response['Chat_Help_Pro_transient'])) ? $response['Chat_Help_Pro_transient'] : array();
+      $transient = (! empty($response['Ta_Forms_transient'])) ? $response['Ta_Forms_transient'] : array();
 
-      if (wp_verify_nonce($nonce, 'Chat_Help_Pro_options_nonce')) {
+      if (wp_verify_nonce($nonce, 'Ta_Forms_options_nonce')) {
 
         $importing  = false;
         $section_id = (! empty($transient['section'])) ? $transient['section'] : '';
 
-        if (! $ajax && ! empty($response['Chat_Help_Pro_import_data'])) {
+        if (! $ajax && ! empty($response['Ta_Forms_import_data'])) {
 
           // XSS ok.
           // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
-          $import_data  = json_decode(wp_unslash(trim($response['Chat_Help_Pro_import_data'])), true);
+          $import_data  = json_decode(wp_unslash(trim($response['Ta_Forms_import_data'])), true);
           $options      = (is_array($import_data) && ! empty($import_data)) ? $import_data : array();
           $importing    = true;
           $this->notice = esc_html__('Settings successfully imported.', 'ta-forms');
@@ -346,15 +346,15 @@ if (! class_exists('TaFormsOptions')) {
           }
         }
 
-        $data = apply_filters("Chat_Help_Pro_{$this->unique}_save", $data, $this);
+        $data = apply_filters("Ta_Forms_{$this->unique}_save", $data, $this);
 
-        do_action("Chat_Help_Pro_{$this->unique}_save_before", $data, $this);
+        do_action("Ta_Forms_{$this->unique}_save_before", $data, $this);
 
         $this->options = $data;
 
         $this->save_options($data);
 
-        do_action("Chat_Help_Pro_{$this->unique}_save_after", $data, $this);
+        do_action("Ta_Forms_{$this->unique}_save_after", $data, $this);
 
         return true;
       }
@@ -376,7 +376,7 @@ if (! class_exists('TaFormsOptions')) {
         update_option($this->unique, $data);
       }
 
-      do_action("Chat_Help_Pro_{$this->unique}_saved", $data, $this);
+      do_action("Ta_Forms_{$this->unique}_saved", $data, $this);
     }
 
     // get options from database
@@ -504,17 +504,17 @@ if (! class_exists('TaFormsOptions')) {
       $nav_type      = ($this->args['nav'] === 'inline') ? 'inline' : 'normal';
       $form_action   = ($this->args['form_action']) ? $this->args['form_action'] : '';
 
-      do_action('Chat_Help_Pro_options_before');
+      do_action('Ta_Forms_options_before');
 
-      echo '<div class="TaForms ta-forms-options' . esc_attr($theme . $class . $wrapper_class) . '" data-slug="' . esc_attr($this->args['menu_slug']) . '" data-unique="' . esc_attr($this->unique) . '">';
+      echo '<div class="ta-forms ta-forms-options' . esc_attr($theme . $class . $wrapper_class) . '" data-slug="' . esc_attr($this->args['menu_slug']) . '" data-unique="' . esc_attr($this->unique) . '">';
 
       echo '<div class="ta-forms-container">';
 
       echo '<form method="post" action="' . esc_attr($form_action) . '" enctype="multipart/form-data" id="ta-forms-form" autocomplete="off" novalidate="novalidate">';
 
-      echo '<input type="hidden" class="ta-forms-section-id" name="Chat_Help_Pro_transient[section]" value="1">';
+      echo '<input type="hidden" class="ta-forms-section-id" name="Ta_Forms_transient[section]" value="1">';
 
-      wp_nonce_field('Chat_Help_Pro_options_nonce', 'Chat_Help_Pro_options_nonce' . $this->unique);
+      wp_nonce_field('Ta_Forms_options_nonce', 'Ta_Forms_options_nonce' . $this->unique);
 
       echo '<div class="ta-forms-header' . esc_attr($sticky_class) . '">';
       echo '<div class="ta-forms-header-inner">';
@@ -539,8 +539,8 @@ if (! class_exists('TaFormsOptions')) {
 
       echo '<div class="ta-forms-buttons">';
       echo '<input type="submit" name="' . esc_attr($this->unique) . '[_nonce][save]" class="button button-primary ta-forms-top-save ta-forms-save' . esc_attr($ajax_class) . '" value="' . esc_html__('Save Settings', 'ta-forms') . '" data-save="' . esc_html__('Saving...', 'ta-forms') . '">';
-      echo ($this->args['show_reset_section']) ? '<input type="submit" name="Chat_Help_Pro_transient[reset_section]" class="button button-secondary ta-forms-reset-section ta-forms-confirm" value="' . esc_html__('Reset Section', 'ta-forms') . '" data-confirm="' . esc_html__('Are you sure to reset this section options?', 'ta-forms') . '">' : '';
-      echo ($this->args['show_reset_all']) ? '<input type="submit" name="Chat_Help_Pro_transient[reset]" class="button ta-forms-warning-primary ta-forms-reset-all ta-forms-confirm" value="' . (($this->args['show_reset_section']) ? esc_html__('Reset All', 'ta-forms') : esc_html__('Reset', 'ta-forms')) . '" data-confirm="' . esc_html__('Are you sure you want to reset all settings to default values?', 'ta-forms') . '">' : '';
+      echo ($this->args['show_reset_section']) ? '<input type="submit" name="Ta_Forms_transient[reset_section]" class="button button-secondary ta-forms-reset-section ta-forms-confirm" value="' . esc_html__('Reset Section', 'ta-forms') . '" data-confirm="' . esc_html__('Are you sure to reset this section options?', 'ta-forms') . '">' : '';
+      echo ($this->args['show_reset_all']) ? '<input type="submit" name="Ta_Forms_transient[reset]" class="button ta-forms-warning-primary ta-forms-reset-all ta-forms-confirm" value="' . (($this->args['show_reset_section']) ? esc_html__('Reset All', 'ta-forms') : esc_html__('Reset', 'ta-forms')) . '" data-confirm="' . esc_html__('Are you sure you want to reset all settings to default values?', 'ta-forms') . '">' : '';
       echo '</div>';
 
       echo '</div>';
@@ -657,9 +657,9 @@ if (! class_exists('TaFormsOptions')) {
         echo '<div class="ta-forms-footer">';
 
         echo '<div class="ta-forms-buttons">';
-        echo '<input type="submit" name="Chat_Help_Pro_transient[save]" class="button button-primary ta-forms-save' . esc_attr($ajax_class) . '" value="' . esc_html__('Save', 'ta-forms') . '" data-save="' . esc_html__('Saving...', 'ta-forms') . '">';
-        echo ($this->args['show_reset_section']) ? '<input type="submit" name="Chat_Help_Pro_transient[reset_section]" class="button button-secondary ta-forms-reset-section ta-forms-confirm" value="' . esc_html__('Reset Section', 'ta-forms') . '" data-confirm="' . esc_html__('Are you sure to reset this section options?', 'ta-forms') . '">' : '';
-        echo ($this->args['show_reset_all']) ? '<input type="submit" name="Chat_Help_Pro_transient[reset]" class="button ta-forms-warning-primary ta-forms-reset-all ta-forms-confirm" value="' . (($this->args['show_reset_section']) ? esc_html__('Reset All', 'ta-forms') : esc_html__('Reset', 'ta-forms')) . '" data-confirm="' . esc_html__('Are you sure you want to reset all settings to default values?', 'ta-forms') . '">' : '';
+        echo '<input type="submit" name="Ta_Forms_transient[save]" class="button button-primary ta-forms-save' . esc_attr($ajax_class) . '" value="' . esc_html__('Save', 'ta-forms') . '" data-save="' . esc_html__('Saving...', 'ta-forms') . '">';
+        echo ($this->args['show_reset_section']) ? '<input type="submit" name="Ta_Forms_transient[reset_section]" class="button button-secondary ta-forms-reset-section ta-forms-confirm" value="' . esc_html__('Reset Section', 'ta-forms') . '" data-confirm="' . esc_html__('Are you sure to reset this section options?', 'ta-forms') . '">' : '';
+        echo ($this->args['show_reset_all']) ? '<input type="submit" name="Ta_Forms_transient[reset]" class="button ta-forms-warning-primary ta-forms-reset-all ta-forms-confirm" value="' . (($this->args['show_reset_section']) ? esc_html__('Reset All', 'ta-forms') : esc_html__('Reset', 'ta-forms')) . '" data-confirm="' . esc_html__('Are you sure you want to reset all settings to default values?', 'ta-forms') . '">' : '';
         echo '</div>';
 
         echo (! empty($this->args['footer_text'])) ? '<div class="ta-forms-copyright">' . $this->args['footer_text'] . '</div>' : '';
@@ -678,7 +678,7 @@ if (! class_exists('TaFormsOptions')) {
 
       echo '</div>';
 
-      do_action('Chat_Help_Pro_options_after');
+      do_action('Ta_Forms_options_after');
     }
   }
 }

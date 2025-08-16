@@ -8,8 +8,8 @@
  * @since 1.0.0
  * @version 1.0.0
  */
-if (! class_exists('Chat_Help_Pro_Field_layout_preset')) {
-	class Chat_Help_Pro_Field_layout_preset extends Chat_Help_Pro_Fields
+if (! class_exists('Ta_Forms_Field_layout_preset')) {
+	class Ta_Forms_Field_layout_preset extends Ta_Forms_Fields
 	{
 
 		public function __construct($field, $value = '', $unique = '', $where = '', $parent = '')

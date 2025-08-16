@@ -191,18 +191,24 @@ class Frontend
                 $formats = $fields_data['format'] ?? [];
                 $formats = array_merge($formats, ['%s', '%s']); // Ensure correct format
 
-                // $insert = $wpdb->insert($tableUsers, $fieldsData, $formats);
+                $insert = $wpdb->insert($tableUsers, $fieldsData, $formats);
 
                 // Send verification email
-                // $verification_subject = __('Verify Your Email', 'ta-forms');
-                // $verification_body    = sprintf(
-                //     __("Hello %s,\n\nThank you for your proposal regarding %s. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
-                //     $name,
-                //     $verification_link,
-                //     get_bloginfo('name')
-                // );
+                $verification_subject = __('Verify Your Email', 'ta-forms');
 
-                // wp_mail($email, $verification_subject, $verification_body, ['From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>']);
+                $verification_body = sprintf(
+                    __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
+                    $name,
+                    $verification_link,
+                    get_bloginfo('name')
+                );
+
+                $headers = [
+                    'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+                ];
+
+                wp_mail($email, $verification_subject, $verification_body, $headers);
+
 
                 // Handle redirection after saving data
                 wp_send_json_success([

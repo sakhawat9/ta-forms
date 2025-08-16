@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_wp_editor' ) ) {
-  class Chat_Help_Pro_Field_wp_editor extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_wp_editor' ) ) {
+  class Ta_Forms_Field_wp_editor extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -41,11 +41,11 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_wp_editor' ) ) {
 
       echo wp_kses_post($this->field_before());
 
-      echo ( Chat_Help_Pro_wp_editor_api() ) ? '<div class="ta-forms-wp-editor" data-editor-settings="'. esc_attr( wp_json_encode( $editor_settings ) ) .'">' : '';
+      echo ( Ta_Forms_wp_editor_api() ) ? '<div class="ta-forms-wp-editor" data-editor-settings="'. esc_attr( wp_json_encode( $editor_settings ) ) .'">' : '';
 
       echo '<textarea name="'. esc_attr( $this->field_name() ) .'"'. $this->field_attributes( $attributes ) . $editor_height .'>'. $this->value .'</textarea>';
 
-      echo ( Chat_Help_Pro_wp_editor_api() ) ? '</div>' : '';
+      echo ( Ta_Forms_wp_editor_api() ) ? '</div>' : '';
 
       echo wp_kses_post($this->field_after());
 
@@ -53,7 +53,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_wp_editor' ) ) {
 
     public function enqueue() {
 
-      if ( Chat_Help_Pro_wp_editor_api() && function_exists( 'wp_enqueue_editor' ) ) {
+      if ( Ta_Forms_wp_editor_api() && function_exists( 'wp_enqueue_editor' ) ) {
 
         wp_enqueue_editor();
 
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_wp_editor' ) ) {
       $media_buttons = ob_get_clean();
 
       echo '<script type="text/javascript">';
-      echo 'var Chat_Help_Pro_media_buttons = '. wp_json_encode( $media_buttons ) .';';
+      echo 'var Ta_Forms_media_buttons = '. wp_json_encode( $media_buttons ) .';';
       echo '</script>';
 
     }
@@ -87,17 +87,17 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_wp_editor' ) ) {
     // Setup wp editor settings
     public function setup_wp_editor_settings() {
 
-      if ( Chat_Help_Pro_wp_editor_api() && class_exists( '_WP_Editors') ) {
+      if ( Ta_Forms_wp_editor_api() && class_exists( '_WP_Editors') ) {
 
-        $defaults = apply_filters( 'Chat_Help_Pro_wp_editor', array(
+        $defaults = apply_filters( 'Ta_Forms_wp_editor', array(
           'tinymce' => array(
             'wp_skip_init' => true
           ),
         ) );
 
-        $setup = _WP_Editors::parse_settings( 'Chat_Help_Pro_wp_editor', $defaults );
+        $setup = _WP_Editors::parse_settings( 'Ta_Forms_wp_editor', $defaults );
 
-        _WP_Editors::editor_settings( 'Chat_Help_Pro_wp_editor', $setup );
+        _WP_Editors::editor_settings( 'Ta_Forms_wp_editor', $setup );
 
       }
 

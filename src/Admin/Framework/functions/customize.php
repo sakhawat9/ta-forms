@@ -93,7 +93,7 @@ if ( ! class_exists( 'WP_Customize_Control_TaForms' ) && class_exists( 'WP_Custo
 
     public function render_field_content() {
 
-      $complex = apply_filters( 'Chat_Help_Pro_customize_complex_fields', array(
+      $complex = apply_filters( 'Ta_Forms_customize_complex_fields', array(
         'accordion',
         'background',
         'border',

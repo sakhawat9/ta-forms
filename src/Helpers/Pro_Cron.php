@@ -5,8 +5,8 @@
  * @link        http://themeatelier.com/
  * @since      2.2.4
  *
- * @package    Chat_Help_Pro
- * @subpackage Chat_Help_Pro/admin
+ * @package    Ta_Forms
+ * @subpackage Ta_Forms/admin
  * @author     ThemeAtelier <themeatelierbd@gmail.com>
  */
 

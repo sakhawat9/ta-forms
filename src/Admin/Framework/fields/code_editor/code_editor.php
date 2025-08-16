@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_code_editor' ) ) {
-  class Chat_Help_Pro_Field_code_editor extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_code_editor' ) ) {
+  class Ta_Forms_Field_code_editor extends Ta_Forms_Fields {
 
     public $version = '6.65.7';
     public $cdn_url = 'https://cdn.jsdelivr.net/npm/codemirror@';

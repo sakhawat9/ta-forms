@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! function_exists( 'Chat_Help_Pro_array_search' ) ) {
-  function Chat_Help_Pro_array_search( $array, $key, $value ) {
+if ( ! function_exists( 'Ta_Forms_array_search' ) ) {
+  function Ta_Forms_array_search( $array, $key, $value ) {
 
     $results = array();
 
@@ -18,7 +18,7 @@ if ( ! function_exists( 'Chat_Help_Pro_array_search' ) ) {
       }
 
       foreach ( $array as $sub_array ) {
-        $results = array_merge( $results, Chat_Help_Pro_array_search( $sub_array, $key, $value ) );
+        $results = array_merge( $results, Ta_Forms_array_search( $sub_array, $key, $value ) );
       }
 
     }
@@ -36,8 +36,8 @@ if ( ! function_exists( 'Chat_Help_Pro_array_search' ) ) {
  * @version 1.0.0
  *
  */
-if ( ! function_exists( 'Chat_Help_Pro_timeout' ) ) {
-  function Chat_Help_Pro_timeout( $timenow, $starttime, $timeout = 30 ) {
+if ( ! function_exists( 'Ta_Forms_timeout' ) ) {
+  function Ta_Forms_timeout( $timenow, $starttime, $timeout = 30 ) {
     return ( ( $timenow - $starttime ) < $timeout ) ? true : false;
   }
 }
@@ -50,8 +50,8 @@ if ( ! function_exists( 'Chat_Help_Pro_timeout' ) ) {
  * @version 1.0.0
  *
  */
-if ( ! function_exists( 'Chat_Help_Pro_wp_editor_api' ) ) {
-  function Chat_Help_Pro_wp_editor_api() {
+if ( ! function_exists( 'Ta_Forms_wp_editor_api' ) ) {
+  function Ta_Forms_wp_editor_api() {
     global $wp_version;
     return version_compare( $wp_version, '4.8', '>=' );
   }

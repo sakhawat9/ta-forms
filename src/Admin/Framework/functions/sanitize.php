@@ -8,8 +8,8 @@
  * @version 1.0.0
  *
  */
-if ( ! function_exists( 'Chat_Help_Pro_sanitize_replace_a_to_b' ) ) {
-  function Chat_Help_Pro_sanitize_replace_a_to_b( $value ) {
+if ( ! function_exists( 'Ta_Forms_sanitize_replace_a_to_b' ) ) {
+  function Ta_Forms_sanitize_replace_a_to_b( $value ) {
     return str_replace( 'a', 'b', $value );
   }
 }
@@ -22,8 +22,8 @@ if ( ! function_exists( 'Chat_Help_Pro_sanitize_replace_a_to_b' ) ) {
  * @version 1.0.0
  *
  */
-if ( ! function_exists( 'Chat_Help_Pro_sanitize_title' ) ) {
-  function Chat_Help_Pro_sanitize_title( $value ) {
+if ( ! function_exists( 'Ta_Forms_sanitize_title' ) ) {
+  function Ta_Forms_sanitize_title( $value ) {
     return sanitize_title( $value );
   }
 }

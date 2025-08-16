@@ -42,6 +42,41 @@ class Helpers
 	public function __construct()
 	{
 		$this->min = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+
+		$this->create_offers_table();
+	}
+
+		public function create_offers_table()
+	{
+		global $wpdb;
+
+		// Define the table name with the WordPress table prefix
+		$table_name = $wpdb->prefix . 'ta_forms_offers';
+
+		// SQL to create the table
+		$sql = "
+			CREATE TABLE $table_name (
+			ta_forms_id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+			ta_forms_name TEXT NOT NULL,
+			ta_forms_email VARCHAR(255) NOT NULL,
+			ta_forms_subject TEXT NOT NULL,
+			ta_forms_phone TEXT NOT NULL,
+			ta_forms_offer INT(11) NOT NULL,
+			ta_forms_proposal TEXT NOT NULL,
+			ta_forms_ip VARCHAR(100) DEFAULT NULL,
+			ta_forms_currency VARCHAR(20) CHARACTER SET utf8 NOT NULL,
+			ta_forms_domain VARCHAR(250) CHARACTER SET utf8 NOT NULL,
+			ta_forms_referrer VARCHAR(250) CHARACTER SET utf8 NOT NULL,
+			ta_forms_http_referrer VARCHAR(250) CHARACTER SET utf8 NOT NULL,
+			ta_forms_verify_email VARCHAR(250) CHARACTER SET utf8 NOT NULL,
+			ta_forms_verify_phone VARCHAR(250) CHARACTER SET utf8 NOT NULL,
+			ta_forms_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (ta_forms_id)
+		) " . $wpdb->get_charset_collate() . ";";
+
+		// Use dbDelta to create the table
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
 	}
 
 	/**

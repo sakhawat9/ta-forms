@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Fields' ) ) {
-  abstract class Chat_Help_Pro_Fields extends Chat_Help_Pro_Abstract {
+if ( ! class_exists( 'Ta_Forms_Fields' ) ) {
+  abstract class Ta_Forms_Fields extends Ta_Forms_Abstract {
     protected $field;
     protected $value;
     protected $unique;

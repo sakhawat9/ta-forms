@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Walker_Nav_Menu_Edit' ) && class_exists( 'Walker_Nav_Menu_Edit' ) ) {
-  class Chat_Help_Pro_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
+if ( ! class_exists( 'Ta_Forms_Walker_Nav_Menu_Edit' ) && class_exists( 'Walker_Nav_Menu_Edit' ) ) {
+  class Ta_Forms_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 
     public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 

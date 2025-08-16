@@ -10,9 +10,9 @@
  */
 ( function( blocks, blockEditor, element, components ) {
 
-  if ( !window.Chat_Help_Pro_gutenberg_blocks ) { return; }
+  if ( !window.Ta_Forms_gutenberg_blocks ) { return; }
 
-  Object.values(window.Chat_Help_Pro_gutenberg_blocks).forEach( function( block ) {
+  Object.values(window.Ta_Forms_gutenberg_blocks).forEach( function( block ) {
 
     var registerBlockType = blocks.registerBlockType;
     var PlainText         = blockEditor.PlainText;
@@ -46,7 +46,7 @@
               'data-gutenberg-id': block.name,
               className: 'is-secondary ta-forms-shortcode-button',
               onClick: function () {
-                window.Chat_Help_Pro_gutenberg_props = props;
+                window.Ta_Forms_gutenberg_props = props;
               },
             }, block.button_title ),
 

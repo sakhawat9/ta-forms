@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_select' ) ) {
-  class Chat_Help_Pro_Field_select extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_select' ) ) {
+  class Ta_Forms_Field_select extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -34,7 +34,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_select' ) ) {
 
         if ( ! empty( $args['ajax'] ) ) {
           $args['settings']['data']['type']  = $args['options'];
-          $args['settings']['data']['nonce'] = wp_create_nonce( 'Chat_Help_Pro_chosen_ajax_nonce' );
+          $args['settings']['data']['nonce'] = wp_create_nonce( 'Ta_Forms_chosen_ajax_nonce' );
           if ( ! empty( $args['query_args'] ) ) {
             $args['settings']['data']['query_args'] = $args['query_args'];
           }

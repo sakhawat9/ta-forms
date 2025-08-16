@@ -148,7 +148,7 @@
   //
   // Custom clone for textarea and select clone() bug
   //
-  $.fn.Chat_Help_Pro_clone = function () {
+  $.fn.Ta_Forms_clone = function () {
 
     var base = $.fn.clone.apply(this, arguments),
       clone = this.find('select').add(this.filter('select')),
@@ -175,13 +175,13 @@
   //
   // Expand All Options
   //
-  $.fn.Chat_Help_Pro_expand_all = function () {
+  $.fn.Ta_Forms_expand_all = function () {
     return this.each(function () {
       $(this).on('click', function (e) {
 
         e.preventDefault();
         $('.ta-forms-wrapper').toggleClass('ta-forms-show-all');
-        $('.ta-forms-section').Chat_Help_Pro_reload_script();
+        $('.ta-forms-section').Ta_Forms_reload_script();
         $(this).find('.fa').toggleClass('fa-indent').toggleClass('fa-outdent');
 
       });
@@ -191,7 +191,7 @@
   //
   // Options Navigation
   //
-  $.fn.Chat_Help_Pro_nav_options = function () {
+  $.fn.Ta_Forms_nav_options = function () {
     return this.each(function () {
 
       var $nav = $(this),
@@ -227,7 +227,7 @@
           var $section = $('[data-section-id="' + slug + '"]');
 
           $section.removeClass('hidden');
-          $section.Chat_Help_Pro_reload_script();
+          $section.Ta_Forms_reload_script();
 
           $('.ta-forms-section-id').val($section.index() + 1);
 
@@ -248,7 +248,7 @@
   //
   // Metabox Tabs
   //
-  $.fn.Chat_Help_Pro_nav_metabox = function () {
+  $.fn.Ta_Forms_nav_metabox = function () {
     return this.each(function () {
 
       var $nav = $(this),
@@ -274,7 +274,7 @@
           var $section = $sections.eq(index);
 
           $section.removeClass('hidden');
-          $section.Chat_Help_Pro_reload_script();
+          $section.Ta_Forms_reload_script();
 
           $last = $section;
 
@@ -290,7 +290,7 @@
   //
   // Metabox Page Templates Listener
   //
-  $.fn.Chat_Help_Pro_page_templates = function () {
+  $.fn.Ta_Forms_page_templates = function () {
     if (this.length) {
 
       $(document).on('change', '.editor-page-attributes__template select, #page_template, .edit-post-post-status + div select', function () {
@@ -308,7 +308,7 @@
   //
   // Metabox Post Formats Listener
   //
-  $.fn.Chat_Help_Pro_post_formats = function () {
+  $.fn.Ta_Forms_post_formats = function () {
     if (this.length) {
 
       $(document).on('change', '.editor-post-format select, #formatdiv input[name="post_format"]', function () {
@@ -329,7 +329,7 @@
   //
   // Search
   //
-  $.fn.Chat_Help_Pro_search = function () {
+  $.fn.Ta_Forms_search = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -357,7 +357,7 @@
               var $field = $title.closest('.ta-forms-field');
 
               $field.removeClass('ta-forms-metabox-hide');
-              $field.parent().Chat_Help_Pro_reload_script();
+              $field.parent().Ta_Forms_reload_script();
 
             }
 
@@ -378,7 +378,7 @@
   //
   // Sticky Header
   //
-  $.fn.Chat_Help_Pro_sticky = function () {
+  $.fn.Ta_Forms_sticky = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -433,7 +433,7 @@
   //
   // Dependency System
   //
-  $.fn.Chat_Help_Pro_dependency = function () {
+  $.fn.Ta_Forms_dependency = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -441,8 +441,8 @@
 
       if ($fields.length) {
 
-        var normal_ruleset = $.Chat_Help_Pro_deps.createRuleset(),
-          global_ruleset = $.Chat_Help_Pro_deps.createRuleset(),
+        var normal_ruleset = $.Ta_Forms_deps.createRuleset(),
+          global_ruleset = $.Ta_Forms_deps.createRuleset(),
           normal_depends = [],
           global_depends = [];
 
@@ -475,11 +475,11 @@
         });
 
         if (normal_depends.length) {
-          $.Chat_Help_Pro_deps.enable($this, normal_ruleset, normal_depends);
+          $.Ta_Forms_deps.enable($this, normal_ruleset, normal_depends);
         }
 
         if (global_depends.length) {
-          $.Chat_Help_Pro_deps.enable(TaForms.vars.$body, global_ruleset, global_depends);
+          $.Ta_Forms_deps.enable(TaForms.vars.$body, global_ruleset, global_depends);
         }
 
       }
@@ -490,7 +490,7 @@
   //
   // Field: accordion
   //
-  $.fn.Chat_Help_Pro_field_accordion = function () {
+  $.fn.Ta_Forms_field_accordion = function () {
     return this.each(function () {
 
       var $titles = $(this).find('.ta-forms-accordion-title');
@@ -509,7 +509,7 @@
 
         if (!$content.data('opened')) {
 
-          $content.Chat_Help_Pro_reload_script();
+          $content.Ta_Forms_reload_script();
           $content.data('opened', true);
 
         }
@@ -524,7 +524,7 @@
   //
   // Field: backup
   //
-  $.fn.Chat_Help_Pro_field_backup = function () {
+  $.fn.Ta_Forms_field_backup = function () {
     return this.each(function () {
 
       if (window.wp.customize === undefined) { return; }
@@ -547,7 +547,7 @@
           }
 
           // then show a notification overlay
-          wp.customize.notifications.add(new wp.customize.OverlayNotification('Chat_Help_Pro_field_backup_notification', {
+          wp.customize.notifications.add(new wp.customize.OverlayNotification('Ta_Forms_field_backup_notification', {
             type: 'default',
             message: '&nbsp;',
             loading: true
@@ -574,7 +574,7 @@
             })
             .fail(function (response) {
               alert(response.error);
-              wp.customize.notifications.remove('Chat_Help_Pro_field_backup_notification');
+              wp.customize.notifications.remove('Ta_Forms_field_backup_notification');
             });
 
         }
@@ -597,7 +597,7 @@
             window.location.reload(true);
           }).fail(function (response) {
             alert(response.error);
-            wp.customize.notifications.remove('Chat_Help_Pro_field_backup_notification');
+            wp.customize.notifications.remove('Ta_Forms_field_backup_notification');
           });
 
         }
@@ -610,16 +610,16 @@
   //
   // Field: background
   //
-  $.fn.Chat_Help_Pro_field_background = function () {
+  $.fn.Ta_Forms_field_background = function () {
     return this.each(function () {
-      $(this).find('.ta-forms--background-image').Chat_Help_Pro_reload_script();
+      $(this).find('.ta-forms--background-image').Ta_Forms_reload_script();
     });
   };
 
   //
   // Field: code_editor
   //
-  $.fn.Chat_Help_Pro_field_code_editor = function () {
+  $.fn.Ta_Forms_field_code_editor = function () {
     return this.each(function () {
 
       if (typeof CodeMirror !== 'function') { return; }
@@ -675,7 +675,7 @@
   //
   // Field: date
   //
-  $.fn.Chat_Help_Pro_field_date = function () {
+  $.fn.Ta_Forms_field_date = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -730,7 +730,7 @@
   //
   // Field: datetime
   //
-  $.fn.Chat_Help_Pro_field_datetime = function () {
+  $.fn.Ta_Forms_field_datetime = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -765,16 +765,16 @@
   //
   // Field: fieldset
   //
-  $.fn.Chat_Help_Pro_field_fieldset = function () {
+  $.fn.Ta_Forms_field_fieldset = function () {
     return this.each(function () {
-      $(this).find('.ta-forms-fieldset-content').Chat_Help_Pro_reload_script();
+      $(this).find('.ta-forms-fieldset-content').Ta_Forms_reload_script();
     });
   };
 
   //
   // Field: gallery
   //
-  $.fn.Chat_Help_Pro_field_gallery = function () {
+  $.fn.Ta_Forms_field_gallery = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -859,7 +859,7 @@
   //
   // Field: group
   //
-  $.fn.Chat_Help_Pro_field_group = function () {
+  $.fn.Ta_Forms_field_group = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -935,13 +935,13 @@
 
             });
 
-            $panel.Chat_Help_Pro_reload_script();
+            $panel.Ta_Forms_reload_script();
             $panel.data('opened', true);
             $panel.data('retry', false);
 
           } else if ($panel.data('retry')) {
 
-            $panel.Chat_Help_Pro_reload_script_retry();
+            $panel.Ta_Forms_reload_script_retry();
             $panel.data('retry', false);
 
           }
@@ -965,7 +965,7 @@
         update: function (event, ui) {
 
           TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-cloneable-item'), field_id);
-          $wrapper.Chat_Help_Pro_customizer_refresh();
+          $wrapper.Ta_Forms_customizer_refresh();
 
           if (is_number) {
             update_title_numbers($wrapper);
@@ -987,7 +987,7 @@
           return;
         }
 
-        var $cloned_item = $hidden.Chat_Help_Pro_clone(true);
+        var $cloned_item = $hidden.Ta_Forms_clone(true);
 
         $cloned_item.removeClass('ta-forms-cloneable-hidden');
 
@@ -998,8 +998,8 @@
         $wrapper.append($cloned_item);
         $wrapper.accordion('refresh');
         $wrapper.accordion({ active: count });
-        $wrapper.Chat_Help_Pro_customizer_refresh();
-        $wrapper.Chat_Help_Pro_customizer_listen({ closest: true });
+        $wrapper.Ta_Forms_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_listen({ closest: true });
 
         if (is_number) {
           update_title_numbers($wrapper);
@@ -1022,9 +1022,9 @@
 
         var $this = $(this),
           $parent = $this.parent().parent(),
-          $cloned_helper = $parent.children('.ta-forms-cloneable-helper').Chat_Help_Pro_clone(true),
-          $cloned_title = $parent.children('.ta-forms-cloneable-title').Chat_Help_Pro_clone(),
-          $cloned_content = $parent.children('.ta-forms-cloneable-content').Chat_Help_Pro_clone(),
+          $cloned_helper = $parent.children('.ta-forms-cloneable-helper').Ta_Forms_clone(true),
+          $cloned_title = $parent.children('.ta-forms-cloneable-title').Ta_Forms_clone(),
+          $cloned_content = $parent.children('.ta-forms-cloneable-content').Ta_Forms_clone(),
           $cloned_item = $('<div class="ta-forms-cloneable-item" />');
 
         $cloned_item.append($cloned_helper);
@@ -1036,8 +1036,8 @@
         TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-cloneable-item'), field_id);
 
         $wrapper.accordion('refresh');
-        $wrapper.Chat_Help_Pro_customizer_refresh();
-        $wrapper.Chat_Help_Pro_customizer_listen({ closest: true });
+        $wrapper.Ta_Forms_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_listen({ closest: true });
 
         if (is_number) {
           update_title_numbers($wrapper);
@@ -1066,7 +1066,7 @@
 
         TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-cloneable-item'), field_id);
 
-        $wrapper.Chat_Help_Pro_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_refresh();
 
         if (is_number) {
           update_title_numbers($wrapper);
@@ -1083,7 +1083,7 @@
   //
   // Field: icon
   //
-  $.fn.Chat_Help_Pro_field_icon = function () {
+  $.fn.Ta_Forms_field_icon = function () {
     return this.each(function () {
 
       var $this = $(this);
@@ -1175,7 +1175,7 @@
   //
   // Field: map
   //
-  $.fn.Chat_Help_Pro_field_map = function () {
+  $.fn.Ta_Forms_field_map = function () {
     return this.each(function () {
 
       if (typeof L === 'undefined') { return; }
@@ -1294,7 +1294,7 @@
   //
   // Field: link
   //
-  $.fn.Chat_Help_Pro_field_link = function () {
+  $.fn.Ta_Forms_field_link = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1367,7 +1367,7 @@
   //
   // Field: media
   //
-  $.fn.Chat_Help_Pro_field_media = function () {
+  $.fn.Ta_Forms_field_media = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1462,7 +1462,7 @@
   //
   // Field: repeater
   //
-  $.fn.Chat_Help_Pro_field_repeater = function () {
+  $.fn.Ta_Forms_field_repeater = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1476,7 +1476,7 @@
         max = parseInt($wrapper.data('max')),
         min = parseInt($wrapper.data('min'));
 
-      $wrapper.children('.ta-forms-repeater-item').children('.ta-forms-repeater-content').Chat_Help_Pro_reload_script();
+      $wrapper.children('.ta-forms-repeater-item').children('.ta-forms-repeater-content').Ta_Forms_reload_script();
 
       $wrapper.sortable({
         axis: 'y',
@@ -1487,8 +1487,8 @@
         update: function (event, ui) {
 
           TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-repeater-item'), field_id);
-          $wrapper.Chat_Help_Pro_customizer_refresh();
-          ui.item.Chat_Help_Pro_reload_script_retry();
+          $wrapper.Ta_Forms_customizer_refresh();
+          ui.item.Ta_Forms_reload_script_retry();
 
         }
       });
@@ -1506,7 +1506,7 @@
           return;
         }
 
-        var $cloned_item = $hidden.Chat_Help_Pro_clone(true);
+        var $cloned_item = $hidden.Ta_Forms_clone(true);
 
         $cloned_item.removeClass('ta-forms-repeater-hidden');
 
@@ -1515,9 +1515,9 @@
         });
 
         $wrapper.append($cloned_item);
-        $cloned_item.children('.ta-forms-repeater-content').Chat_Help_Pro_reload_script();
-        $wrapper.Chat_Help_Pro_customizer_refresh();
-        $wrapper.Chat_Help_Pro_customizer_listen({ closest: true });
+        $cloned_item.children('.ta-forms-repeater-content').Ta_Forms_reload_script();
+        $wrapper.Ta_Forms_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_listen({ closest: true });
 
       });
 
@@ -1536,8 +1536,8 @@
 
         var $this = $(this),
           $parent = $this.parent().parent().parent(),
-          $cloned_content = $parent.children('.ta-forms-repeater-content').Chat_Help_Pro_clone(),
-          $cloned_helper = $parent.children('.ta-forms-repeater-helper').Chat_Help_Pro_clone(true),
+          $cloned_content = $parent.children('.ta-forms-repeater-content').Ta_Forms_clone(),
+          $cloned_helper = $parent.children('.ta-forms-repeater-helper').Ta_Forms_clone(true),
           $cloned_item = $('<div class="ta-forms-repeater-item" />');
 
         $cloned_item.append($cloned_content);
@@ -1545,12 +1545,12 @@
 
         $wrapper.children().eq($parent.index()).after($cloned_item);
 
-        $cloned_item.children('.ta-forms-repeater-content').Chat_Help_Pro_reload_script();
+        $cloned_item.children('.ta-forms-repeater-content').Ta_Forms_reload_script();
 
         TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-repeater-item'), field_id);
 
-        $wrapper.Chat_Help_Pro_customizer_refresh();
-        $wrapper.Chat_Help_Pro_customizer_listen({ closest: true });
+        $wrapper.Ta_Forms_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_listen({ closest: true });
 
       };
 
@@ -1575,7 +1575,7 @@
 
         TaForms.helper.name_nested_replace($wrapper.children('.ta-forms-repeater-item'), field_id);
 
-        $wrapper.Chat_Help_Pro_customizer_refresh();
+        $wrapper.Ta_Forms_customizer_refresh();
 
       };
 
@@ -1588,7 +1588,7 @@
   //
   // Field: slider
   //
-  $.fn.Chat_Help_Pro_field_slider = function () {
+  $.fn.Ta_Forms_field_slider = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1622,7 +1622,7 @@
   //
   // Field: sortable
   //
-  $.fn.Chat_Help_Pro_field_sortable = function () {
+  $.fn.Ta_Forms_field_sortable = function () {
     return this.each(function () {
 
       var $sortable = $(this).find('.ta-forms-sortable');
@@ -1633,11 +1633,11 @@
         cursor: 'move',
         placeholder: 'widget-placeholder',
         update: function (event, ui) {
-          $sortable.Chat_Help_Pro_customizer_refresh();
+          $sortable.Ta_Forms_customizer_refresh();
         }
       });
 
-      $sortable.find('.ta-forms-sortable-content').Chat_Help_Pro_reload_script();
+      $sortable.find('.ta-forms-sortable-content').Ta_Forms_reload_script();
 
     });
   };
@@ -1645,7 +1645,7 @@
   //
   // Field: sorter
   //
-  $.fn.Chat_Help_Pro_field_sorter = function () {
+  $.fn.Ta_Forms_field_sorter = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1666,7 +1666,7 @@
             $el.attr('name', $el.attr('name').replace('enabled', 'disabled'));
           }
 
-          $this.Chat_Help_Pro_customizer_refresh();
+          $this.Ta_Forms_customizer_refresh();
 
         }
       });
@@ -1677,7 +1677,7 @@
           connectWith: $enabled,
           placeholder: 'ui-sortable-placeholder',
           update: function (event, ui) {
-            $this.Chat_Help_Pro_customizer_refresh();
+            $this.Ta_Forms_customizer_refresh();
           }
         });
 
@@ -1689,7 +1689,7 @@
   //
   // Field: spinner
   //
-  $.fn.Chat_Help_Pro_field_spinner = function () {
+  $.fn.Ta_Forms_field_spinner = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -1721,7 +1721,7 @@
   //
   // Field: switcher
   //
-  $.fn.Chat_Help_Pro_field_switcher = function () {
+  $.fn.Ta_Forms_field_switcher = function () {
     return this.each(function () {
 
       var $switcher = $(this).find('.ta-forms--switcher');
@@ -1748,14 +1748,14 @@
   //
   // Field: tabbed
   //
-  $.fn.Chat_Help_Pro_field_tabbed = function () {
+  $.fn.Ta_Forms_field_tabbed = function () {
     return this.each(function () {
 
       var $this = $(this),
         $links = $this.find('.ta-forms-tabbed-nav a'),
         $contents = $this.find('.ta-forms-tabbed-content');
 
-      $contents.eq(0).Chat_Help_Pro_reload_script();
+      $contents.eq(0).Ta_Forms_reload_script();
 
       $links.on('click', function (e) {
 
@@ -1766,7 +1766,7 @@
           $content = $contents.eq(index);
 
         $link.addClass('ta-forms-tabbed-active').siblings().removeClass('ta-forms-tabbed-active');
-        $content.Chat_Help_Pro_reload_script();
+        $content.Ta_Forms_reload_script();
         $content.removeClass('hidden').siblings().addClass('hidden');
 
       });
@@ -1776,14 +1776,14 @@
   //
   // Field: section_tab
   //
-  $.fn.Chat_Help_Pro_field_section_tab = function () {
+  $.fn.Ta_Forms_field_section_tab = function () {
     return this.each(function () {
 
       var $this = $(this),
         $links = $this.find('.ta-forms-section_tab-nav a'),
         $contents = $this.find('.ta-forms-section_tab-content');
 
-      $contents.eq(0).Chat_Help_Pro_reload_script();
+      $contents.eq(0).Ta_Forms_reload_script();
 
       $links.on('click', function (e) {
         e.preventDefault();
@@ -1797,7 +1797,7 @@
         $link.addClass('ta-forms-section_tab-active');
         
         // $link.addClass('ta-forms-section_tab-active').siblings().removeClass('ta-forms-section_tab-active');
-        $content.Chat_Help_Pro_reload_script();
+        $content.Ta_Forms_reload_script();
         $content.removeClass('hidden').siblings().addClass('hidden');
 
       });
@@ -1808,15 +1808,15 @@
   //
   // Field: typography
   //
-  $.fn.Chat_Help_Pro_field_typography = function () {
+  $.fn.Ta_Forms_field_typography = function () {
     return this.each(function () {
 
       var base = this;
       var $this = $(this);
       var loaded_fonts = [];
-      var webfonts = Chat_Help_Pro_typography_json.webfonts;
-      var googlestyles = Chat_Help_Pro_typography_json.googlestyles;
-      var defaultstyles = Chat_Help_Pro_typography_json.defaultstyles;
+      var webfonts = Ta_Forms_typography_json.webfonts;
+      var googlestyles = Ta_Forms_typography_json.googlestyles;
+      var defaultstyles = Ta_Forms_typography_json.defaultstyles;
 
       //
       //
@@ -2229,7 +2229,7 @@
   //
   // Field: upload
   //
-  $.fn.Chat_Help_Pro_field_upload = function () {
+  $.fn.Ta_Forms_field_upload = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -2312,10 +2312,10 @@
   //
   // Field: wp_editor
   //
-  $.fn.Chat_Help_Pro_field_wp_editor = function () {
+  $.fn.Ta_Forms_field_wp_editor = function () {
     return this.each(function () {
 
-      if (typeof window.wp.editor === 'undefined' || typeof window.tinyMCEPreInit === 'undefined' || typeof window.tinyMCEPreInit.mceInit.Chat_Help_Pro_wp_editor === 'undefined') {
+      if (typeof window.wp.editor === 'undefined' || typeof window.tinyMCEPreInit === 'undefined' || typeof window.tinyMCEPreInit.mceInit.Ta_Forms_wp_editor === 'undefined') {
         return;
       }
 
@@ -2339,8 +2339,8 @@
 
       // Get default editor settings
       var default_editor_settings = {
-        tinymce: window.tinyMCEPreInit.mceInit.Chat_Help_Pro_wp_editor,
-        quicktags: window.tinyMCEPreInit.qtInit.Chat_Help_Pro_wp_editor
+        tinymce: window.tinyMCEPreInit.mceInit.Ta_Forms_wp_editor,
+        quicktags: window.tinyMCEPreInit.qtInit.Ta_Forms_wp_editor
       };
 
       // Get default editor settings
@@ -2387,7 +2387,7 @@
       });
 
       // Add Media buttons
-      if (field_editor_settings.media_buttons && window.Chat_Help_Pro_media_buttons) {
+      if (field_editor_settings.media_buttons && window.Ta_Forms_media_buttons) {
 
         var $editor_buttons = $editor.find('.wp-media-buttons');
 
@@ -2397,7 +2397,7 @@
 
         } else {
 
-          var $media_buttons = $(window.Chat_Help_Pro_media_buttons);
+          var $media_buttons = $(window.Ta_Forms_media_buttons);
 
           $media_buttons.find('.ta-forms-shortcode-button').data('editor-id', uid);
 
@@ -2414,11 +2414,11 @@
   //
   // Confirm
   //
-  $.fn.Chat_Help_Pro_confirm = function () {
+  $.fn.Ta_Forms_confirm = function () {
     return this.each(function () {
       $(this).on('click', function (e) {
 
-        var confirm_text = $(this).data('confirm') || window.Chat_Help_Pro_vars.i18n.confirm;
+        var confirm_text = $(this).data('confirm') || window.Ta_Forms_vars.i18n.confirm;
         var confirm_answer = confirm(confirm_text);
 
         if (confirm_answer) {
@@ -2453,7 +2453,7 @@
   //
   // Options Save
   //
-  $.fn.Chat_Help_Pro_save = function () {
+  $.fn.Ta_Forms_save = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -2478,7 +2478,7 @@
             $panel.addClass('ta-forms-saving');
             $buttons.prop('disabled', true);
 
-            window.wp.ajax.post('Chat_Help_Pro_' + $panel.data('unique') + '_ajax_save', {
+            window.wp.ajax.post('Ta_Forms_' + $panel.data('unique') + '_ajax_save', {
               data: $('#ta-forms-form').serializeJSONTaForms()
             })
               .done(function (response) {
@@ -2549,7 +2549,7 @@
   //
   // Option Framework
   //
-  $.fn.Chat_Help_Pro_options = function () {
+  $.fn.Ta_Forms_options = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -2597,7 +2597,7 @@
   //
   // Taxonomy Framework
   //
-  $.fn.Chat_Help_Pro_taxonomy = function () {
+  $.fn.Ta_Forms_taxonomy = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -2606,7 +2606,7 @@
       if ($form.attr('id') === 'addtag') {
 
         var $submit = $form.find('#submit'),
-          $cloned = $this.find('.ta-forms-field').Chat_Help_Pro_clone();
+          $cloned = $this.find('.ta-forms-field').Ta_Forms_clone();
 
         $submit.on('click', function () {
 
@@ -2618,9 +2618,9 @@
 
             $this.html($cloned);
 
-            $cloned = $cloned.Chat_Help_Pro_clone();
+            $cloned = $cloned.Ta_Forms_clone();
 
-            $this.Chat_Help_Pro_reload_script();
+            $this.Ta_Forms_reload_script();
 
           }
 
@@ -2634,7 +2634,7 @@
   //
   // Shortcode Framework
   //
-  $.fn.Chat_Help_Pro_shortcode = function () {
+  $.fn.Ta_Forms_shortcode = function () {
 
     var base = this;
 
@@ -2806,10 +2806,10 @@
 
               $insert.parent().removeClass('hidden');
 
-              $cloned = $appended.find('.ta-forms--repeat-shortcode').Chat_Help_Pro_clone();
+              $cloned = $appended.find('.ta-forms--repeat-shortcode').Ta_Forms_clone();
 
-              $appended.Chat_Help_Pro_reload_script();
-              $appended.find('.ta-forms-fields').Chat_Help_Pro_reload_script();
+              $appended.Ta_Forms_reload_script();
+              $appended.find('.ta-forms-fields').Ta_Forms_reload_script();
 
             });
 
@@ -2866,8 +2866,8 @@
 
         if (gutenberg_id) {
 
-          var content = window.Chat_Help_Pro_gutenberg_props.attributes.hasOwnProperty('shortcode') ? window.Chat_Help_Pro_gutenberg_props.attributes.shortcode : '';
-          window.Chat_Help_Pro_gutenberg_props.setAttributes({ shortcode: content + shortcode });
+          var content = window.Ta_Forms_gutenberg_props.attributes.hasOwnProperty('shortcode') ? window.Ta_Forms_gutenberg_props.attributes.shortcode : '';
+          window.Ta_Forms_gutenberg_props.setAttributes({ shortcode: content + shortcode });
 
         } else if (editor_id) {
 
@@ -2889,12 +2889,12 @@
         e.preventDefault();
 
         var $repeatable = $modal.find('.ta-forms--repeatable');
-        var $new_clone = $cloned.Chat_Help_Pro_clone();
+        var $new_clone = $cloned.Ta_Forms_clone();
         var $remove_btn = $new_clone.find('.ta-forms-repeat-remove');
 
         var $appended = $new_clone.appendTo($repeatable);
 
-        $new_clone.find('.ta-forms-fields').Chat_Help_Pro_reload_script();
+        $new_clone.find('.ta-forms-fields').Ta_Forms_reload_script();
 
         TaForms.helper.name_nested_replace($modal.find('.ta-forms--repeat-shortcode'), sc_group);
 
@@ -2952,12 +2952,12 @@
 
   };
 
-  $.fn.Chat_Help_Pro_color = function () {
+  $.fn.Ta_Forms_color = function () {
     return this.each(function () {
 
       var $input = $(this),
         picker_color = TaForms.funcs.parse_color($input.val()),
-        palette_color = window.Chat_Help_Pro_vars.color_palette.length ? window.Chat_Help_Pro_vars.color_palette : true,
+        palette_color = window.Ta_Forms_vars.color_palette.length ? window.Ta_Forms_vars.color_palette : true,
         $container;
 
       // Destroy and Reinit
@@ -3065,7 +3065,7 @@
   //
   // ChosenJS
   //
-  $.fn.Chat_Help_Pro_chosen = function () {
+  $.fn.Ta_Forms_chosen = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -3078,7 +3078,7 @@
           allow_single_deselect: true,
           disable_search_threshold: 10,
           width: set_width,
-          no_results_text: window.Chat_Help_Pro_vars.i18n.no_results_text,
+          no_results_text: window.Ta_Forms_vars.i18n.no_results_text,
         }, $this.data('chosen-settings'));
 
       if ($inited.length) {
@@ -3098,9 +3098,9 @@
           width: '100%',
           min_length: 3,
           type_delay: 500,
-          typing_text: window.Chat_Help_Pro_vars.i18n.typing_text,
-          searching_text: window.Chat_Help_Pro_vars.i18n.searching_text,
-          no_results_text: window.Chat_Help_Pro_vars.i18n.no_results_text,
+          typing_text: window.Ta_Forms_vars.i18n.typing_text,
+          searching_text: window.Ta_Forms_vars.i18n.searching_text,
+          no_results_text: window.Ta_Forms_vars.i18n.no_results_text,
         }, $this.data('chosen-settings'));
 
         $this.TaFormsAjaxChosen(set_ajax_options);
@@ -3190,7 +3190,7 @@
   //
   // Helper Checkbox Checker
   //
-  $.fn.Chat_Help_Pro_checkbox = function () {
+  $.fn.Ta_Forms_checkbox = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -3207,7 +3207,7 @@
   //
   // Helper Check/Uncheck All
   //
-  $.fn.Chat_Help_Pro_checkbox_all = function () {
+  $.fn.Ta_Forms_checkbox_all = function () {
     return this.each(function () {
 
       var $this = $(this);
@@ -3241,7 +3241,7 @@
   //
   // Siblings
   //
-  $.fn.Chat_Help_Pro_siblings = function () {
+  $.fn.Ta_Forms_siblings = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -3278,7 +3278,7 @@
   //
   // Help Tooltip
   //
-  $.fn.Chat_Help_Pro_help = function() {
+  $.fn.Ta_Forms_help = function() {
     return this.each( function() {
 
       var $this = $(this),
@@ -3331,7 +3331,7 @@
   //
   // Customize Refresh
   //
-  $.fn.Chat_Help_Pro_customizer_refresh = function () {
+  $.fn.Ta_Forms_customizer_refresh = function () {
     return this.each(function () {
 
       var $this = $(this),
@@ -3370,7 +3370,7 @@
   //
   // Customize Listen Form Elements
   //
-  $.fn.Chat_Help_Pro_customizer_listen = function (options) {
+  $.fn.Ta_Forms_customizer_listen = function (options) {
 
     var settings = $.extend({
       closest: false,
@@ -3414,9 +3414,9 @@
       var $complex = $this.find('.ta-forms-customize-complex');
 
       if ($fields.length) {
-        $this.Chat_Help_Pro_dependency();
-        $fields.Chat_Help_Pro_reload_script({ dependency: false });
-        $complex.Chat_Help_Pro_customizer_listen();
+        $this.Ta_Forms_dependency();
+        $fields.Ta_Forms_reload_script({ dependency: false });
+        $complex.Ta_Forms_customizer_listen();
       }
 
       $this.data('inited', true);
@@ -3433,7 +3433,7 @@
     var window_width = navigator.userAgent.indexOf('AppleWebKit/') > -1 ? TaForms.vars.$window.width() : window.innerWidth;
 
     if (window_width <= 782 && !TaForms.vars.onloaded) {
-      $('.ta-forms-section').Chat_Help_Pro_reload_script();
+      $('.ta-forms-section').Ta_Forms_reload_script();
       TaForms.vars.onloaded = true;
     }
 
@@ -3442,7 +3442,7 @@
   //
   // Widgets Framework
   //
-  $.fn.Chat_Help_Pro_widgets = function () {
+  $.fn.Ta_Forms_widgets = function () {
     return this.each(function () {
 
       $(document).on('widget-added widget-updated', function (event, $widget) {
@@ -3450,7 +3450,7 @@
         var $fields = $widget.find('.ta-forms-fields');
 
         if ($fields.length) {
-          $fields.Chat_Help_Pro_reload_script();
+          $fields.Ta_Forms_reload_script();
         }
 
       });
@@ -3460,13 +3460,13 @@
         var $fields = $(this).parent().find('.ta-forms-fields');
 
         if ($fields.length) {
-          $fields.Chat_Help_Pro_reload_script();
+          $fields.Ta_Forms_reload_script();
         }
 
       });
 
       $('.widgets-sortables, .control-section-sidebar').on('sortstop', function (event, ui) {
-        ui.item.find('.ta-forms-fields').Chat_Help_Pro_reload_script_retry();
+        ui.item.find('.ta-forms-fields').Ta_Forms_reload_script_retry();
       });
 
     });
@@ -3475,17 +3475,17 @@
   //
   // Nav Menu Options Framework
   //
-  $.fn.Chat_Help_Pro_nav_menu = function () {
+  $.fn.Ta_Forms_nav_menu = function () {
     return this.each(function () {
 
       var $navmenu = $(this);
 
       $navmenu.on('click', 'a.item-edit', function () {
-        $(this).closest('li.menu-item').find('.ta-forms-fields').Chat_Help_Pro_reload_script();
+        $(this).closest('li.menu-item').find('.ta-forms-fields').Ta_Forms_reload_script();
       });
 
       $navmenu.on('sortstop', function (event, ui) {
-        ui.item.find('.ta-forms-fields').Chat_Help_Pro_reload_script_retry();
+        ui.item.find('.ta-forms-fields').Ta_Forms_reload_script_retry();
       });
 
     });
@@ -3494,13 +3494,13 @@
   //
   // Retry Plugins
   //
-  $.fn.Chat_Help_Pro_reload_script_retry = function () {
+  $.fn.Ta_Forms_reload_script_retry = function () {
     return this.each(function () {
 
       var $this = $(this);
 
       if ($this.data('inited')) {
-        $this.children('.ta-forms-field-wp_editor').Chat_Help_Pro_field_wp_editor();
+        $this.children('.ta-forms-field-wp_editor').Ta_Forms_field_wp_editor();
       }
 
     });
@@ -3509,7 +3509,7 @@
   //
   // Reload Plugins
   //
-  $.fn.Chat_Help_Pro_reload_script = function (options) {
+  $.fn.Ta_Forms_reload_script = function (options) {
 
     var settings = $.extend({
       dependency: true,
@@ -3523,57 +3523,57 @@
       if (!$this.data('inited')) {
 
         // Field plugins
-        $this.children('.ta-forms-field-accordion').Chat_Help_Pro_field_accordion();
-        $this.children('.ta-forms-field-backup').Chat_Help_Pro_field_backup();
-        $this.children('.ta-forms-field-background').Chat_Help_Pro_field_background();
-        $this.children('.ta-forms-field-code_editor').Chat_Help_Pro_field_code_editor();
-        $this.children('.ta-forms-field-date').Chat_Help_Pro_field_date();
-        $this.children('.ta-forms-field-datetime').Chat_Help_Pro_field_datetime();
-        $this.children('.ta-forms-field-fieldset').Chat_Help_Pro_field_fieldset();
-        $this.children('.ta-forms-field-gallery').Chat_Help_Pro_field_gallery();
-        $this.children('.ta-forms-field-group').Chat_Help_Pro_field_group();
-        $this.children('.ta-forms-field-icon').Chat_Help_Pro_field_icon();
-        $this.children('.ta-forms-field-link').Chat_Help_Pro_field_link();
-        $this.children('.ta-forms-field-media').Chat_Help_Pro_field_media();
-        $this.children('.ta-forms-field-map').Chat_Help_Pro_field_map();
-        $this.children('.ta-forms-field-repeater').Chat_Help_Pro_field_repeater();
-        $this.children('.ta-forms-field-slider').Chat_Help_Pro_field_slider();
-        $this.children('.ta-forms-field-sortable').Chat_Help_Pro_field_sortable();
-        $this.children('.ta-forms-field-sorter').Chat_Help_Pro_field_sorter();
-        $this.children('.ta-forms-field-spinner').Chat_Help_Pro_field_spinner();
-        $this.children('.ta-forms-field-switcher').Chat_Help_Pro_field_switcher();
-        $this.children('.ta-forms-field-section_tab').Chat_Help_Pro_field_section_tab();
-        $this.children('.ta-forms-field-tabbed').Chat_Help_Pro_field_tabbed();
-        $this.children('.ta-forms-field-typography').Chat_Help_Pro_field_typography();
-        $this.children('.ta-forms-field-upload').Chat_Help_Pro_field_upload();
-        $this.children('.ta-forms-field-wp_editor').Chat_Help_Pro_field_wp_editor();
+        $this.children('.ta-forms-field-accordion').Ta_Forms_field_accordion();
+        $this.children('.ta-forms-field-backup').Ta_Forms_field_backup();
+        $this.children('.ta-forms-field-background').Ta_Forms_field_background();
+        $this.children('.ta-forms-field-code_editor').Ta_Forms_field_code_editor();
+        $this.children('.ta-forms-field-date').Ta_Forms_field_date();
+        $this.children('.ta-forms-field-datetime').Ta_Forms_field_datetime();
+        $this.children('.ta-forms-field-fieldset').Ta_Forms_field_fieldset();
+        $this.children('.ta-forms-field-gallery').Ta_Forms_field_gallery();
+        $this.children('.ta-forms-field-group').Ta_Forms_field_group();
+        $this.children('.ta-forms-field-icon').Ta_Forms_field_icon();
+        $this.children('.ta-forms-field-link').Ta_Forms_field_link();
+        $this.children('.ta-forms-field-media').Ta_Forms_field_media();
+        $this.children('.ta-forms-field-map').Ta_Forms_field_map();
+        $this.children('.ta-forms-field-repeater').Ta_Forms_field_repeater();
+        $this.children('.ta-forms-field-slider').Ta_Forms_field_slider();
+        $this.children('.ta-forms-field-sortable').Ta_Forms_field_sortable();
+        $this.children('.ta-forms-field-sorter').Ta_Forms_field_sorter();
+        $this.children('.ta-forms-field-spinner').Ta_Forms_field_spinner();
+        $this.children('.ta-forms-field-switcher').Ta_Forms_field_switcher();
+        $this.children('.ta-forms-field-section_tab').Ta_Forms_field_section_tab();
+        $this.children('.ta-forms-field-tabbed').Ta_Forms_field_tabbed();
+        $this.children('.ta-forms-field-typography').Ta_Forms_field_typography();
+        $this.children('.ta-forms-field-upload').Ta_Forms_field_upload();
+        $this.children('.ta-forms-field-wp_editor').Ta_Forms_field_wp_editor();
 
         // Field colors
-        $this.children('.ta-forms-field-border').find('.ta-forms-color').Chat_Help_Pro_color();
-        $this.children('.ta-forms-field-background').find('.ta-forms-color').Chat_Help_Pro_color();
-        $this.children('.ta-forms-field-color').find('.ta-forms-color').Chat_Help_Pro_color();
-        $this.children('.ta-forms-field-color_group').find('.ta-forms-color').Chat_Help_Pro_color();
-        $this.children('.ta-forms-field-link_color').find('.ta-forms-color').Chat_Help_Pro_color();
-        $this.children('.ta-forms-field-typography').find('.ta-forms-color').Chat_Help_Pro_color();
+        $this.children('.ta-forms-field-border').find('.ta-forms-color').Ta_Forms_color();
+        $this.children('.ta-forms-field-background').find('.ta-forms-color').Ta_Forms_color();
+        $this.children('.ta-forms-field-color').find('.ta-forms-color').Ta_Forms_color();
+        $this.children('.ta-forms-field-color_group').find('.ta-forms-color').Ta_Forms_color();
+        $this.children('.ta-forms-field-link_color').find('.ta-forms-color').Ta_Forms_color();
+        $this.children('.ta-forms-field-typography').find('.ta-forms-color').Ta_Forms_color();
 
         // Field chosenjs
-        $this.children('.ta-forms-field-select').find('.ta-forms-chosen').Chat_Help_Pro_chosen();
+        $this.children('.ta-forms-field-select').find('.ta-forms-chosen').Ta_Forms_chosen();
 
         // Field Checkbox
-        $this.children('.ta-forms-field-checkbox').find('.ta-forms-checkbox').Chat_Help_Pro_checkbox();
-        $this.children('.ta-forms-field-checkbox').find('.ta-forms-checkbox-all').Chat_Help_Pro_checkbox_all();
+        $this.children('.ta-forms-field-checkbox').find('.ta-forms-checkbox').Ta_Forms_checkbox();
+        $this.children('.ta-forms-field-checkbox').find('.ta-forms-checkbox-all').Ta_Forms_checkbox_all();
 
         // Field Siblings
-        $this.children('.ta-forms-field-button_set').find('.ta-forms-siblings').Chat_Help_Pro_siblings();
-        $this.children('.ta-forms-field-image_select').find('.ta-forms-siblings').Chat_Help_Pro_siblings();
-        $this.children('.ta-forms-field-layout_preset').find('.ta-forms-siblings').Chat_Help_Pro_siblings();
-        $this.children('.ta-forms-field-palette').find('.ta-forms-siblings').Chat_Help_Pro_siblings();
+        $this.children('.ta-forms-field-button_set').find('.ta-forms-siblings').Ta_Forms_siblings();
+        $this.children('.ta-forms-field-image_select').find('.ta-forms-siblings').Ta_Forms_siblings();
+        $this.children('.ta-forms-field-layout_preset').find('.ta-forms-siblings').Ta_Forms_siblings();
+        $this.children('.ta-forms-field-palette').find('.ta-forms-siblings').Ta_Forms_siblings();
 
         // Help Tooptip
-        $this.children('.ta-forms-field').find('.ta-forms-help').Chat_Help_Pro_help();
+        $this.children('.ta-forms-field').find('.ta-forms-help').Ta_Forms_help();
 
         if (settings.dependency) {
-          $this.Chat_Help_Pro_dependency();
+          $this.Ta_Forms_dependency();
         }
 
         $this.data('inited', true);
@@ -3590,22 +3590,22 @@
   //
   $(document).ready(function () {
 
-    $('.ta-forms-save').Chat_Help_Pro_save();
-    $('.ta-forms-options').Chat_Help_Pro_options();
-    $('.ta-forms-sticky-header').Chat_Help_Pro_sticky();
-    $('.ta-forms-nav-options').Chat_Help_Pro_nav_options();
-    $('.ta-forms-nav-metabox').Chat_Help_Pro_nav_metabox();
-    $('.ta-forms-taxonomy').Chat_Help_Pro_taxonomy();
-    $('.ta-forms-page-templates').Chat_Help_Pro_page_templates();
-    $('.ta-forms-post-formats').Chat_Help_Pro_post_formats();
-    $('.ta-forms-shortcode').Chat_Help_Pro_shortcode();
-    $('.ta-forms-search').Chat_Help_Pro_search();
-    $('.ta-forms-confirm').Chat_Help_Pro_confirm();
-    $('.ta-forms-expand-all').Chat_Help_Pro_expand_all();
-    $('.ta-forms-onload').Chat_Help_Pro_reload_script();
-    $('#widgets-editor').Chat_Help_Pro_widgets();
-    $('#widgets-right').Chat_Help_Pro_widgets();
-    $('#menu-to-edit').Chat_Help_Pro_nav_menu();
+    $('.ta-forms-save').Ta_Forms_save();
+    $('.ta-forms-options').Ta_Forms_options();
+    $('.ta-forms-sticky-header').Ta_Forms_sticky();
+    $('.ta-forms-nav-options').Ta_Forms_nav_options();
+    $('.ta-forms-nav-metabox').Ta_Forms_nav_metabox();
+    $('.ta-forms-taxonomy').Ta_Forms_taxonomy();
+    $('.ta-forms-page-templates').Ta_Forms_page_templates();
+    $('.ta-forms-post-formats').Ta_Forms_post_formats();
+    $('.ta-forms-shortcode').Ta_Forms_shortcode();
+    $('.ta-forms-search').Ta_Forms_search();
+    $('.ta-forms-confirm').Ta_Forms_confirm();
+    $('.ta-forms-expand-all').Ta_Forms_expand_all();
+    $('.ta-forms-onload').Ta_Forms_reload_script();
+    $('#widgets-editor').Ta_Forms_widgets();
+    $('#widgets-right').Ta_Forms_widgets();
+    $('#menu-to-edit').Ta_Forms_nav_menu();
 
     // Shortcode Copied
     $(document).on('click', '#shortcode_copy', function (e) {
@@ -3637,30 +3637,6 @@
       }, 2000);
     });
 
-  });
-
-  /* License Activation */
-  $('.ta-forms-license input.btn-license-save-activate').on('click', function () {
-    $('.ta-forms-license input.btn-license-activate').trigger('click')
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const passOrTextIcon = document.querySelector('.pass_or_text_icon');
-    const licenseKeyContainer = document.querySelector('.ta-forms-license-key');
-    const inputField = licenseKeyContainer.querySelector('.ta-forms-license-key-input');
-
-    passOrTextIcon.addEventListener('click', () => {
-      // Toggle the input field type
-      if (inputField.type === 'password') {
-        inputField.type = 'text';
-        licenseKeyContainer.classList.remove('hide_pass');
-        licenseKeyContainer.classList.add('show_pass');
-      } else {
-        inputField.type = 'password';
-        licenseKeyContainer.classList.remove('show_pass');
-        licenseKeyContainer.classList.add('hide_pass');
-      }
-    });
   });
 
 

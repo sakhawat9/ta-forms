@@ -48,7 +48,7 @@ add_action('activated_plugin', 'ta_forms_redirect_to');
 function ta_forms_redirect_to($plugin)
 {
     if (TAFORMS_BASENAME === $plugin) {
-        $redirect_url = esc_url(admin_url('admin.php?page=ta-forms#tab=license'));
+        $redirect_url = esc_url(admin_url('edit.php?post_type=ta-forms'));
         exit(wp_kses_post(wp_safe_redirect($redirect_url)));
     }
 }

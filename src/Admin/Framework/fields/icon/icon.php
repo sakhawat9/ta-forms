@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_icon' ) ) {
-  class Chat_Help_Pro_Field_icon extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_icon' ) ) {
+  class Ta_Forms_Field_icon extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -23,7 +23,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_icon' ) ) {
 
       echo wp_kses_post($this->field_before());
 
-      $nonce  = wp_create_nonce( 'Chat_Help_Pro_icon_nonce' );
+      $nonce  = wp_create_nonce( 'Ta_Forms_icon_nonce' );
       $hidden = ( empty( $this->value ) ) ? ' hidden' : '';
 
       echo '<div class="ta-forms-icon-select">';
@@ -38,8 +38,8 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_icon' ) ) {
     }
 
     public function enqueue() {
-      add_action( 'admin_footer', array( 'Chat_Help_Pro_Field_icon', 'add_footer_modal_icon' ) );
-      add_action( 'customize_controls_print_footer_scripts', array( 'Chat_Help_Pro_Field_icon', 'add_footer_modal_icon' ) );
+      add_action( 'admin_footer', array( 'Ta_Forms_Field_icon', 'add_footer_modal_icon' ) );
+      add_action( 'customize_controls_print_footer_scripts', array( 'Ta_Forms_Field_icon', 'add_footer_modal_icon' ) );
     }
 
     public static function add_footer_modal_icon() {
