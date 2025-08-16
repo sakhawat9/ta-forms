@@ -59,7 +59,7 @@ class Admin
         $this->plugin_slug = $plugin_slug;
         $this->version     = $version;
         $this->min         = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
-        Options::options('cwp_option');
+        Options::options('ta-forms');
         add_action('admin_menu', array($this, 'add_plugin_page'));
         new Pro_Cron();
     }

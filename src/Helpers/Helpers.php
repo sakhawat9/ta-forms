@@ -51,9 +51,11 @@ class Helpers
 	 */
 	public function register_all_scripts()
 	{
+		wp_register_style('sweetalert2', TAFORMS_ASSETS . 'css/sweetalert2' . $this->min . '.css', array(), '1.0.0', 'all');
 		wp_register_style('ico-font', TAFORMS_ASSETS . 'css/icofont' . $this->min . '.css', array(), '1.0.0', 'all');
 		wp_register_style('ta-forms-style', TAFORMS_ASSETS . 'css/ta-forms-style' . $this->min . '.css', array(), TAFORMS_VERSION, 'all');
 
+		wp_register_script('sweetalert2', TAFORMS_ASSETS . 'js/sweetalert2' . $this->min . '.js', array('jquery'), TAFORMS_VERSION, true);
 		wp_register_script('jquery_validate', TAFORMS_ASSETS . 'js/jquery.validate' . $this->min . '.js', array('jquery'), TAFORMS_VERSION, true);
 		wp_register_script('ta-forms-script', TAFORMS_ASSETS . 'js/ta-forms-script' . $this->min . '.js', array('jquery'), TAFORMS_VERSION, true);
 	}
@@ -92,6 +94,107 @@ class Helpers
 	}
 
 	/**
+	 * Validates the reCAPTCHA response for form submissions.
+	 *
+	 * Checks the reCAPTCHA response using Google's API and returns validation status.
+	 *
+	 * @return bool True if validation passed, false otherwise.
+	 */
+	public static function ta_forms_recaptcha_validation($form_editor)
+	{
+		$recaptcha = false;
+		foreach ($form_editor as $field_id => $form_field) {
+			$field_name = isset($form_field['field_select']) ? $form_field['field_select'] : '';
+
+			switch ($field_name) {
+				case 'recaptcha':
+					$recaptcha = true;
+					break;
+			}
+		}
+		if ($recaptcha) {
+			$options                 = get_option('ta-forms-opt');
+			$ta_forms_recaptcha_version   = !empty($options['ta_forms_recaptcha_version']) ? $options['ta_forms_recaptcha_version'] : '';
+			$recaptcha_secretkey_v2  = !empty($options['ta-forms-recaptcha-secretkey']) ? $options['ta-forms-recaptcha-secretkey'] : '';
+			$recaptcha_secretkey_v3  = !empty($options['ta-forms-recaptcha-secretkey_v3']) ? $options['ta-forms-recaptcha-secretkey_v3'] : '';
+
+			if ($recaptcha_secretkey_v2 || $recaptcha_secretkey_v3) {
+				parse_str($_POST['data'], $formData);
+				$g_recaptcha_response = isset($formData['g-recaptcha-response']) ? $formData['g-recaptcha-response'] : '';
+
+				$token = isset($formData['token']) ? $formData['token'] : '';
+				$remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+				$response         = ('v2' === $ta_forms_recaptcha_version) ? $g_recaptcha_response ?? '' : $token ?? '';
+				$recaptcha_secret = ('v2' === $ta_forms_recaptcha_version) ? $recaptcha_secretkey_v2 : $recaptcha_secretkey_v3;
+				$remote_ip        = $remote_addr;
+
+				// Send request to Google's reCAPTCHA verification API
+				$recaptcha_response = wp_remote_post(
+					'https://www.google.com/recaptcha/api/siteverify',
+					array(
+						'body' => array(
+							'secret'   => $recaptcha_secret,
+							'response' => $response,
+							'remoteip' => $remote_ip,
+						),
+					)
+				);
+
+				$recaptcha_data = json_decode(wp_remote_retrieve_body($recaptcha_response));
+				return !empty($recaptcha_data->success);
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	public static function fields_data($form_fields, $formData)
+	{
+		// Initialize an array to store field values
+		$fields_data = [];
+		$format = [];
+		$field_index = 1;
+
+		foreach ($form_fields as $field_id => $form_field) {
+			switch ($field_id) {
+				case 'full_name':
+					$fields_data['ta_forms_name'] = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
+					$format[] = '%s';
+					break;
+				case 'email_address':
+					$fields_data['ta_forms_email'] = sanitize_email($formData['ta_forms_email'] ?? '');
+					$format[] = '%s';
+					break;
+				case 'subject':
+					$fields_data['ta_forms_subject'] = sanitize_text_field($formData['ta_forms_subject'] ?? '');
+					$format[] = '%s';
+					break;
+				case 'phone_mobile':
+					$fields_data['ta_forms_phone'] = sanitize_text_field($formData['ta_forms_phone'] ?? '');
+					$format[] = '%s';
+					break;
+				case 'offer':
+					$fields_data['ta_forms_offer'] = sanitize_text_field($formData['ta_forms_offer'] ?? '');
+					$format[] = '%s';
+					break;
+				case 'proposal':
+					$fields_data['ta_forms_proposal'] = sanitize_textarea_field($formData['ta_forms_proposal'] ?? '');
+					$format[] = '%s';
+					break;
+			}
+
+			$field_index++;
+		}
+
+		return [
+			'fields_data' => $fields_data,
+			'format' => $format
+		];
+	}
+
+	/**
 	 * Generates the HTML form for the Ta Forms plugin.
 	 *
 	 * Outputs the HTML code for the Domain For Sale form, with dynamic labels, placeholders, and reCAPTCHA support if enabled.
@@ -122,7 +225,7 @@ class Helpers
 		if (!is_admin() && $required_notice && !empty($notice_label)) {
 			echo '<div class="testimonial-required-message">' . esc_html($notice_label) . '</div>';
 		}
-		echo '<form class="form" data-form_id="' . esc_attr($form_id) . '" action="' . esc_url($request_uri) . '" method="post">';
+		echo '<div class="ta_forms"><form class="form" data-form_id="' . esc_attr($form_id) . '" action="' . esc_url($request_uri) . '" method="post">';
 		if (is_admin()) {
 			if ($required_notice && !empty($notice_label)) {
 				echo '<div class="testimonial-required-message">' . esc_html($notice_label) . '</div>';
@@ -176,6 +279,6 @@ class Helpers
 					break;
 			}
 		}
-		echo '</form>';
+		echo '</form></div>';
 	}
 }

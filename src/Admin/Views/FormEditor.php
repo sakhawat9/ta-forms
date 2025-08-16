@@ -58,7 +58,7 @@ class FormEditor
                                                 'id'      => 'placeholder',
                                                 'type'    => 'text',
                                                 'title'   => __('Placeholder', 'ta-forms'),
-                                                'default' => __('What is your full name?', 'ta-forms'),
+                                                'default' => __('Full Name', 'ta-forms'),
                                             ),
                                             array(
                                                 'id'      => 'required',
@@ -69,26 +69,27 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'name', true),
                             ),
                             array(
                                 'id'         => 'email_address',
                                 'type'       => 'accordion',
                                 'accordions' => array(
                                     array(
-                                        'title'  => __('E-mail Address', 'ta-forms'),
+                                        'title'  => __('Email Address', 'ta-forms'),
                                         'fields' => array(
                                             array(
                                                 'id'      => 'label',
                                                 'type'    => 'text',
                                                 'title'   => __('Label', 'ta-forms'),
                                                 'desc'    => __('To hide this label, leave it empty.', 'ta-forms'),
-                                                'default' => __('E-mail Address', 'ta-forms'),
+                                                'default' => __('Email', 'ta-forms'),
                                             ),
                                             array(
                                                 'id'      => 'placeholder',
                                                 'type'    => 'text',
                                                 'title'   => __('Placeholder', 'ta-forms'),
-                                                'default' => __('What is your e-mail address?', 'ta-forms'),
+                                                'default' => __('Email Address', 'ta-forms'),
                                             ),
                                             array(
                                                 'id'      => 'required',
@@ -99,6 +100,7 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'email', true),
                             ),
                             array(
                                 'id'         => 'subject',
@@ -129,6 +131,7 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'subject', true),
                             ),
                             array(
                                 'id'         => 'phone_mobile',
@@ -159,6 +162,7 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'phone_mobile', true),
                             ),
                             array(
                                 'id'         => 'offer',
@@ -189,6 +193,7 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'offer', true),
                             ),
                             array(
                                 'id'         => 'proposal',
@@ -219,6 +224,7 @@ class FormEditor
                                         ),
                                     ),
                                 ),
+                                'dependency' => array('form_elements', 'any', 'proposal', true),
                             ),
                             array(
                                 'id'         => 'submit_btn',
@@ -249,7 +255,7 @@ class FormEditor
         // Metabox of the testimonial form generator.
         // Set a unique slug-like ID.
         //
-        $prefix_form_fields = 'ta_forms_form_elements_options';
+        $prefix_form_fields = 'ta_form_elements';
 
         //
         // Form metabox.
@@ -264,32 +270,31 @@ class FormEditor
             )
         );
 
-        // //
-        // // Form Editor section.
-        // //
-        // TaForms::createSection(
-        //     $prefix_form_fields,
-        //     array(
-        //         'fields' => array(
+        //
+        // Form Editor section.
+        //
+        TaForms::createSection(
+            $prefix_form_fields,
+            array(
+                'fields' => array(
 
-        //             array(
-        //                 'id'      => 'form_elements',
-        //                 'type'    => 'checkbox',
-        //                 'options' => array(
-        //                     'name'              => __('Full Name', 'ta-forms'),
-        //                     'email'             => __('E-mail Address', 'ta-forms'),
-        //                     'subject'             => __('Subject', 'ta-forms'),
-        //                     'phone_mobile'      => __('Phone or Mobile', 'ta-forms'),
-        //                     'offer'             => __('Offer', 'ta-forms'),
-        //                     'proposal'          => __('Proposal', 'ta-forms'),
-        //                     // 'agree_checkbox'    => __('Checkbox', 'ta-forms'),
-        //                     'recaptcha'         => __('reCAPTCHA', 'ta-forms'),
-        //                 ),
-        //                 'default' => array('name', 'email', 'offer', 'proposal'),
-        //             ),
+                    array(
+                        'id'      => 'form_elements',
+                        'type'    => 'checkbox',
+                        'options' => array(
+                            'name'              => __('Full Name', 'ta-forms'),
+                            'email'             => __('Email', 'ta-forms'),
+                            'subject'             => __('Subject', 'ta-forms'),
+                            'phone_mobile'      => __('Phone or Mobile', 'ta-forms'),
+                            'offer'             => __('Offer', 'ta-forms'),
+                            'proposal'          => __('Proposal', 'ta-forms'),
+                            'recaptcha'         => __('reCAPTCHA', 'ta-forms'),
+                        ),
+                        'default' => array('name', 'email'),
+                    ),
 
-        //         ),
-        //     )
-        // );
+                ),
+            )
+        );
     }
 }

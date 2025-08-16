@@ -44,7 +44,6 @@ function ta_forms_run()
 }
 add_action('after_setup_theme', 'ta_forms_run');
 
-
 add_action('activated_plugin', 'ta_forms_redirect_to');
 function ta_forms_redirect_to($plugin)
 {
