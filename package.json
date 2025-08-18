@@ -1,6 +1,6 @@
 {
   "name": "ta-forms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin boilerplate description.",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "gulp-uglify": "^3.0.2",
     "gulp-update-version": "^1.0.2",
     "npm-run-all": "^4.1.5",
+    "react": "^19.1.1",
     "rtlcss": "^4.0.0"
   }
 }

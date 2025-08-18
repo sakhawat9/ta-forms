@@ -5,7 +5,7 @@ Plugin Name: 	Ta Forms
 Plugin URI: 	https://wpchathelp.com/
 Description: 	ThemeAtelier Forms.
 Author: 		ThemeAtelier
-Version: 		1.0.0
+Version: 		1.0.1
 Author:         ThemeAtelier
 Author URI:     https://themeatelier.net/
 License:        GPL-2.0+
@@ -23,7 +23,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use ThemeAtelier\TaForms\TaForms;
 
-define('TAFORMS_VERSION', '1.0.0');
+define('TAFORMS_VERSION', '1.0.1');
 define('TAFORMS_FILE', __FILE__);
 define('TAFORMS_DIRNAME', dirname(__FILE__));
 define('TAFORMS_DIR_PATH', plugin_dir_path(__FILE__));

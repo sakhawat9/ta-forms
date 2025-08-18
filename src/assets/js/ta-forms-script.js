@@ -19,6 +19,21 @@
       }
       const formData = $(this).serialize();
       const formId = $form.data("form_id");
+
+      let userData = {
+  device: /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "Desktop",
+  browser: navigator.userAgent,                 // full browser string
+  platform: navigator.platform,                 // MacIntel, Win32, etc.
+  os: navigator.appVersion,                     // OS info (rough)
+  screen: screen.width + "x" + screen.height,   // screen size
+  language: navigator.language,                 // en-GB, en-US, etc.
+  vendor: navigator.vendor,                     // Google Inc., Apple, etc.
+  url: window.location.href,                    // current page
+  referrer: document.referrer,                  // referrer
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // e.g. Asia/Dhaka
+};
+console.log('userData', userData);
+
       $.ajax({
         url: frontend_scripts.ajax_url,
         type: "post",
@@ -27,6 +42,7 @@
           data: formData,
           form_id: formId,
           nonce: frontend_scripts.nonce,
+          userInfo: userData,
         },
         success: function (response) {
           console.log('response', response);

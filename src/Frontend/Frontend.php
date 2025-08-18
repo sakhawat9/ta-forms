@@ -129,6 +129,7 @@ class Frontend
 
         // Retrieve necessary form data
         $form_id       = sanitize_text_field($_POST['form_id'] ?? '');
+        $userInfo = isset($_POST['userInfo']) ? (array) $_POST['userInfo'] : [];
         $contact_form  = get_post_meta($form_id, 'ta-forms', true);
         $form_fields   = $contact_form['form_fields'] ?? '';
 
@@ -143,6 +144,8 @@ class Frontend
         $proposal  = sanitize_text_field($formData['ta_forms_proposal'] ?? '');
         $date      = date('F j, Y, H:i (h:i A) (\G\M\T O)');
         $ip        = esc_sql(sanitize_text_field($_SERVER['REMOTE_ADDR']));
+        $browser        = sanitize_text_field($userInfo['browser'] ?? '');
+        $device        = sanitize_text_field($userInfo['device'] ?? '');
         $siteURL   = get_site_url();
 
         $ta_forms_target_mail = $contact_form['submission_email_notification_to'] ?? '';
@@ -184,12 +187,24 @@ class Frontend
                 $fieldsData = $fields_data['fields_data'];
                 $fieldsData = array_merge($fieldsData, [
                     'ta_forms_ip'            => $ip,
-                    'ta_forms_verify_email'  => $verification_token, // Store the actual token ✅
-                    // 'ta_forms_verify_email'  => 'pending', // Store the actual token ✅
+                    // 'ta_forms_browser'      => $browser,
+                    'ta_forms_device'       => $device,
+                    // 'ta_forms_os'           => sanitize_text_field($userInfo['os'] ?? ''),
+                    'ta_forms_screen'       => sanitize_text_field($userInfo['screen'] ?? ''),
+                    'ta_forms_language'     => sanitize_text_field($userInfo['language'] ?? ''),
+                    'ta_forms_country'      => sanitize_text_field($userInfo['country'] ?? ''),
+                    'ta_forms_city'         => sanitize_text_field($userInfo['city'] ?? ''),
+                    'ta_forms_region'       => sanitize_text_field($userInfo['region'] ?? ''),
+                    'ta_forms_latitude'     => sanitize_text_field($userInfo['latitude'] ?? ''),
+                    'ta_forms_longitude'    => sanitize_text_field($userInfo['longitude'] ?? ''),
+                    'ta_forms_isp'          => sanitize_text_field($userInfo['isp'] ?? ''),
+                    'ta_forms_timezone'     => sanitize_text_field($userInfo['timezone'] ?? ''),
+                    'ta_forms_verify_email'  => $verification_token,
                 ]);
 
                 $formats = $fields_data['format'] ?? [];
                 $formats = array_merge($formats, ['%s', '%s']); // Ensure correct format
+
 
                 $insert = $wpdb->insert($tableUsers, $fieldsData, $formats);
 
