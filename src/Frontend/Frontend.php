@@ -212,7 +212,7 @@ class Frontend
         if ($recaptcha_validation) {
             if (wp_mail($ta_forms_target_mail, $submission_email_subject, $email_body, $headers)) {
                 // Generate a unique verification token
-                $verification_token = wp_generate_uuid4();
+                $verification_token = wp_generate_password(32, false, false);
                 $verification_link  = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
 
                 global $wpdb;
@@ -226,8 +226,10 @@ class Frontend
                         'form'      => sanitize_text_field($_POST['form'] ?? 'formychat'),
                         'form_id'   => intval($_POST['form_id'] ?? 0),
                         'widget_id' => intval($_POST['widget_id'] ?? 0),
+                        'verify_email' => $verification_token,
+                        'verify_status'=> 'pending',
                     ],
-                    ['%s', '%s', '%s', '%d', '%d']
+                    ['%s', '%s', '%s', '%d', '%d', '%s', '%s']
                 );
 
                 // Send verification email

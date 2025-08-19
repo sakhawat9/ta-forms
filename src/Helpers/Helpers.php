@@ -42,8 +42,68 @@ class Helpers
 	public function __construct()
 	{
 		$this->min = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
+		add_action('template_redirect', [$this, 'handle_email_verification']);
+		add_action('admin_init', [$this, 'handle_resend_verification']);
 
 		$this->create_offers_table();
+	}
+
+	public function handle_resend_verification() {
+    if (is_admin() && isset($_GET['action'], $_GET['offer_id']) && $_GET['action'] === 'resend_verification') {
+        global $wpdb;
+        $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+        $offer_id = intval($_GET['offer_id']);
+        $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE id = %d", $offer_id));
+        if ($row && $row->verify_status === 'pending') {
+            $field = maybe_unserialize($row->field);
+            $name = $field['ta_forms_full_name'] ?? '';
+            $email = $field['ta_forms_email'] ?? '';
+            $verification_token = $row->verify_email;
+            $verification_link = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
+
+            $subject = __('Verify Your Email', 'ta-forms');
+            $body = sprintf(
+                __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
+                $name,
+                $verification_link,
+                get_bloginfo('name')
+            );
+            $headers = [
+                'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+            ];
+            wp_mail($email, $subject, $body, $headers);
+
+            wp_redirect(admin_url('admin.php?page=ta-forms&resend=success'));
+            exit;
+        } else {
+            wp_redirect(admin_url('admin.php?page=ta-forms&resend=fail'));
+            exit;
+        }
+    }
+}
+
+	public function handle_email_verification()
+	{
+		if (isset($_GET['ta_forms_verify_email'])) {
+			global $wpdb;
+			$tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+			$token = sanitize_text_field($_GET['ta_forms_verify_email']);
+
+			$row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE verify_email = %s", $token));
+			if ($row && $row->verify_status === 'pending') {
+				$wpdb->update(
+					$tableUsers,
+					['verify_status' => 'verified'],
+					['verify_email' => $token],
+					['%s'],
+					['%s']
+				);
+				echo esc_html__('Your email has been verified!', 'ta-forms');
+			} else {
+				echo esc_html__('Invalid or already verified token.', 'ta-forms');
+			}
+			exit;
+		}
 	}
 
 	public function create_offers_table()
@@ -59,6 +119,8 @@ class Helpers
         form VARCHAR(255) DEFAULT '' NOT NULL,
         form_id BIGINT(20) DEFAULT 0 NOT NULL,
         widget_id BIGINT(20) DEFAULT 0 NOT NULL,
+		verify_email VARCHAR(255) DEFAULT '' NOT NULL,
+    	verify_status VARCHAR(20) DEFAULT 'pending' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY  (id)
     ) $charset_collate;";
