@@ -16,33 +16,39 @@ class OffersView
         global $wpdb;
         $table_name = $wpdb->prefix . 'ta_forms_offers_1';
 
+        
         // Fetch offers
-        $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY ta_forms_date DESC");
-
+        $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY created_at DESC");
+        // print_r($results);
         echo '<div class="wrap">';
         echo '<h1>' . esc_html__('Offers', 'ta-forms') . '</h1>';
-
+        
         if (!empty($results)) {
-            echo '<table class="widefat fixed striped">';
+            echo '<table class="fixed widefat striped">';
             echo '<thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Offer</th>
-                        <th>Date</th>
-                    </tr>
-                  </thead><tbody>';
-
+            <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Offer</th>
+            <th>Date</th>
+            </tr>
+            </thead><tbody>';
+            
             foreach ($results as $row) {
+                $field = maybe_unserialize($row->field);
+                $name = $field['ta_forms_full_name'] ?? '';
+                $email = $field['ta_forms_email'] ?? '';
+                $phone = $field['ta_forms_phone'] ?? '';
+                $offer = $field['ta_forms_offer'] ?? '';
                 echo '<tr>';
-                echo '<td>' . esc_html($row->ta_forms_id) . '</td>';
-                echo '<td>' . esc_html($row->ta_forms_name) . '</td>';
-                echo '<td>' . esc_html($row->ta_forms_email) . '</td>';
-                echo '<td>' . esc_html($row->ta_forms_phone) . '</td>';
-                echo '<td>' . esc_html($row->ta_forms_offer) . '</td>';
-                echo '<td>' . esc_html($row->ta_forms_date) . '</td>';
+                echo '<td>' . esc_html($row->id) . '</td>';
+                echo '<td>' . esc_html($name) . '</td>';
+                echo '<td>' . esc_html($email) . '</td>';
+                echo '<td>' . esc_html($phone) . '</td>';
+                echo '<td>' . esc_html($offer) . '</td>';
+                echo '<td>' . esc_html($row->created_at) . '</td>';
                 echo '</tr>';
             }
 
