@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_date' ) ) {
-  class Chat_Help_Pro_Field_date extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_date' ) ) {
+  class Ta_Forms_Field_date extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );

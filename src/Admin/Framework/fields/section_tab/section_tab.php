@@ -12,8 +12,8 @@
 
 use ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms;
 
-if (! class_exists('Chat_Help_Pro_Field_section_tab')) {
-  class Chat_Help_Pro_Field_section_tab extends Chat_Help_Pro_Fields
+if (! class_exists('Ta_Forms_Field_section_tab')) {
+  class Ta_Forms_Field_section_tab extends Ta_Forms_Fields
   {
 
     public function __construct($field, $value = '', $unique = '', $where = '', $parent = '')

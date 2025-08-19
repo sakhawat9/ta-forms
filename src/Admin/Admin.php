@@ -13,6 +13,7 @@
 
 namespace ThemeAtelier\TaForms\Admin;
 
+use ThemeAtelier\TaForms\Admin\Offers\OffersView;
 use ThemeAtelier\TaForms\Admin\Views\Options;
 use ThemeAtelier\TaForms\Helpers\Pro_Cron;
 
@@ -59,7 +60,7 @@ class Admin
         $this->plugin_slug = $plugin_slug;
         $this->version     = $version;
         $this->min         = defined('WP_DEBUG') && WP_DEBUG ? '' : '.min';
-        Options::options('cwp_option');
+        Options::options('ta-forms');
         add_action('admin_menu', array($this, 'add_plugin_page'));
         new Pro_Cron();
     }
@@ -69,7 +70,7 @@ class Admin
      *
      * @since    1.0.0
      */
-    public static function enqueue_scripts($hook){}
+    public static function enqueue_scripts($hook) {}
 
     public function add_plugin_page()
     {
@@ -83,11 +84,19 @@ class Admin
             'dashicons-format-aside',
             6
         );
+        // Add Offers submenu (default view of main menu)
+        add_submenu_page(
+            'ta-forms',
+            esc_html__('Offers', 'ta-forms'),
+            esc_html__('Offers', 'ta-forms'),
+            'manage_options',
+            'ta-forms',
+            [OffersView::class, 'ta_forms_offers_view']
+        );
     }
 
     /**
      * Options page callback
      */
     public function ta_forms_settings() {}
-
 }

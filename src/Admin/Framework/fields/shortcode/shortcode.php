@@ -9,8 +9,8 @@
  * @version 1.0.0
  *
  */
-if (!class_exists('Chat_Help_Pro_Field_shortcode')) {
-  class Chat_Help_Pro_Field_shortcode extends Chat_Help_Pro_Fields
+if (!class_exists('Ta_Forms_Field_shortcode')) {
+  class Ta_Forms_Field_shortcode extends Ta_Forms_Fields
   {
 
     public function __construct($field, $value = '', $unique = '', $where = '', $parent = '')

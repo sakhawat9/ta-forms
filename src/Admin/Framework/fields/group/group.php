@@ -9,8 +9,8 @@
  */
 use ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms;
 
-if ( ! class_exists( 'Chat_Help_Pro_Field_group' ) ) {
-  class Chat_Help_Pro_Field_group extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_group' ) ) {
+  class Ta_Forms_Field_group extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );

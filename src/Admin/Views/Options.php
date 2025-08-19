@@ -53,7 +53,7 @@ class Options
                 'title'            => esc_html__('Ta Forms', 'ta-forms'),
                 'post_type'        => 'ta-forms',
                 'show_restore'     => false,
-                'nav'            => 'inline',
+                'nav'              => 'inline',
                 'theme'            => 'light',
             )
         );

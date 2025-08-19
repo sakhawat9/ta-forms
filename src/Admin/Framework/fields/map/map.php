@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_map' ) ) {
-  class Chat_Help_Pro_Field_map extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_map' ) ) {
+  class Ta_Forms_Field_map extends Ta_Forms_Fields {
 
     public $version = '1.9.2';
     public $cdn_url = 'https://cdn.jsdelivr.net/npm/leaflet@';

@@ -8,8 +8,8 @@
  * @since 1.0.0
  * @version 1.0.0
  */
-if (! class_exists('Chat_Help_Pro_Field_layout_preset')) {
-	class Chat_Help_Pro_Field_layout_preset extends Chat_Help_Pro_Fields
+if (! class_exists('Ta_Forms_Field_layout_preset')) {
+	class Ta_Forms_Field_layout_preset extends Ta_Forms_Fields
 	{
 
 		public function __construct($field, $value = '', $unique = '', $where = '', $parent = '')
@@ -49,9 +49,9 @@ if (! class_exists('Chat_Help_Pro_Field_layout_preset')) {
 					$checked            = (in_array($key, $value)) ? ' checked' : '';
 					$pro_only           = isset($option['pro_only']) ? ' disabled' : '';
 					$class = isset($option['class']) ? $option['class'] : '';
-					$domain_for_sale_only_class = isset($option['pro_only']) ? ' ta-forms-only' : '';
+					$ta_forms_only_class = isset($option['pro_only']) ? ' ta-forms-only' : '';
 
-					echo '<div class="ta-forms--sibling ta-forms--image' . esc_attr($class) . $active . $domain_for_sale_only_class . '">';
+					echo '<div class="ta-forms--sibling ta-forms--image' . esc_attr($class) . $active . $ta_forms_only_class . '">';
 					echo '<img src="' . esc_url($option['image']) . '" alt="' . $option['text'] . '" />';
 					echo '<input ' . esc_attr($pro_only) . ' type="' . esc_attr($type) . '" name="' . esc_attr($this->field_name($extra)) . '" value="' . $key . '"' . $this->field_attributes() . $checked . '/>';
 					echo '<span class="ta-carousel-type">' . esc_html($option['text']);

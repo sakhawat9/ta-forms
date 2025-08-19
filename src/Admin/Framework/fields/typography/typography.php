@@ -9,8 +9,8 @@
  */
 use ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms;
 
-if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
-  class Chat_Help_Pro_Field_typography extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_typography' ) ) {
+  class Ta_Forms_Field_typography extends Ta_Forms_Fields {
 
     public $chosen = false;
 
@@ -105,7 +105,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
           if ( ! empty( $args['backup_font_family'] ) ) {
             echo '<div class="ta-forms--block ta-forms--block-backup-font-family hidden">';
             echo '<div class="ta-forms--title">'. esc_html__( 'Backup Font Family', 'ta-forms' ) .'</div>';
-            echo $this->create_select( apply_filters( 'Chat_Help_Pro_field_typography_backup_font_family', array(
+            echo $this->create_select( apply_filters( 'Ta_Forms_field_typography_backup_font_family', array(
               'Arial, Helvetica, sans-serif',
               "'Arial Black', Gadget, sans-serif",
               "'Comic Sans MS', cursive, sans-serif",
@@ -357,7 +357,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
 
         $webfonts = array();
 
-        $customwebfonts = apply_filters( 'Chat_Help_Pro_field_typography_customwebfonts', array() );
+        $customwebfonts = apply_filters( 'Ta_Forms_field_typography_customwebfonts', array() );
 
         if ( ! empty( $customwebfonts ) ) {
           $webfonts['custom'] = array(
@@ -368,7 +368,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
 
         $webfonts['safe'] = array(
           'label' => esc_html__( 'Safe Web Fonts', 'ta-forms' ),
-          'fonts' => apply_filters( 'Chat_Help_Pro_field_typography_safewebfonts', array(
+          'fonts' => apply_filters( 'Ta_Forms_field_typography_safewebfonts', array(
             'Arial',
             'Arial Black',
             'Helvetica',
@@ -388,12 +388,12 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
 
         $webfonts['google'] = array(
           'label' => esc_html__( 'Google Web Fonts', 'ta-forms' ),
-          'fonts' => apply_filters( 'Chat_Help_Pro_field_typography_googlewebfonts', Chat_Help_Pro_get_google_fonts()
+          'fonts' => apply_filters( 'Ta_Forms_field_typography_googlewebfonts', Ta_Forms_get_google_fonts()
         ) );
 
-        $defaultstyles = apply_filters( 'Chat_Help_Pro_field_typography_defaultstyles', array( 'normal', 'italic', '700', '700italic' ) );
+        $defaultstyles = apply_filters( 'Ta_Forms_field_typography_defaultstyles', array( 'normal', 'italic', '700', '700italic' ) );
 
-        $googlestyles = apply_filters( 'Chat_Help_Pro_field_typography_googlestyles', array(
+        $googlestyles = apply_filters( 'Ta_Forms_field_typography_googlestyles', array(
           '100'       => 'Thin 100',
           '100italic' => 'Thin 100 Italic',
           '200'       => 'Extra-Light 200',
@@ -414,9 +414,9 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
           '900italic' => 'Black 900 Italic'
         ) );
 
-        $webfonts = apply_filters( 'Chat_Help_Pro_field_typography_webfonts', $webfonts );
+        $webfonts = apply_filters( 'Ta_Forms_field_typography_webfonts', $webfonts );
 
-        wp_localize_script( 'ta-forms', 'Chat_Help_Pro_typography_json', array(
+        wp_localize_script( 'ta-forms', 'Ta_Forms_typography_json', array(
           'webfonts'      => $webfonts,
           'defaultstyles' => $defaultstyles,
           'googlestyles'  => $googlestyles
@@ -434,7 +434,7 @@ if ( ! class_exists( 'Chat_Help_Pro_Field_typography' ) ) {
         $is_google = ( $this->value['type'] === 'google' ) ? true : false;
       } else {
         TaForms::include_plugin_file( 'fields/typography/google-fonts.php' );
-        $is_google = ( array_key_exists( $this->value['font-family'], Chat_Help_Pro_get_google_fonts() ) ) ? true : false;
+        $is_google = ( array_key_exists( $this->value['font-family'], Ta_Forms_get_google_fonts() ) ) ? true : false;
       }
 
       if ( $is_google ) {

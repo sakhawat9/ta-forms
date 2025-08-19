@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Chat_Help_Pro_Field_text' ) ) {
-  class Chat_Help_Pro_Field_text extends Chat_Help_Pro_Fields {
+if ( ! class_exists( 'Ta_Forms_Field_text' ) ) {
+  class Ta_Forms_Field_text extends Ta_Forms_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );

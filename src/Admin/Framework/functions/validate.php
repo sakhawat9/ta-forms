@@ -9,8 +9,8 @@
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_validate_email')) {
-  function Chat_Help_Pro_validate_email($value)
+if (! function_exists('Ta_Forms_validate_email')) {
+  function Ta_Forms_validate_email($value)
   {
 
     if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -27,8 +27,8 @@ if (! function_exists('Chat_Help_Pro_validate_email')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_validate_numeric')) {
-  function Chat_Help_Pro_validate_numeric($value)
+if (! function_exists('Ta_Forms_validate_numeric')) {
+  function Ta_Forms_validate_numeric($value)
   {
 
     if (! is_numeric($value)) {
@@ -45,8 +45,8 @@ if (! function_exists('Chat_Help_Pro_validate_numeric')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_validate_required')) {
-  function Chat_Help_Pro_validate_required($value)
+if (! function_exists('Ta_Forms_validate_required')) {
+  function Ta_Forms_validate_required($value)
   {
 
     if (empty($value)) {
@@ -63,8 +63,8 @@ if (! function_exists('Chat_Help_Pro_validate_required')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_validate_url')) {
-  function Chat_Help_Pro_validate_url($value)
+if (! function_exists('Ta_Forms_validate_url')) {
+  function Ta_Forms_validate_url($value)
   {
 
     if (! filter_var($value, FILTER_VALIDATE_URL)) {
@@ -72,8 +72,8 @@ if (! function_exists('Chat_Help_Pro_validate_url')) {
     }
   }
 }
-if (! function_exists('Chat_Help_Pro_validate_whatsapp_url')) {
-  function Chat_Help_Pro_validate_whatsapp_url($value)
+if (! function_exists('Ta_Forms_validate_whatsapp_url')) {
+  function Ta_Forms_validate_whatsapp_url($value)
   {
 
     if (! filter_var($value, FILTER_VALIDATE_URL)) {
@@ -94,8 +94,8 @@ if (! function_exists('Chat_Help_Pro_validate_whatsapp_url')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_customize_validate_email')) {
-  function Chat_Help_Pro_customize_validate_email($validity, $value, $wp_customize)
+if (! function_exists('Ta_Forms_customize_validate_email')) {
+  function Ta_Forms_customize_validate_email($validity, $value, $wp_customize)
   {
 
     if (! sanitize_email($value)) {
@@ -114,8 +114,8 @@ if (! function_exists('Chat_Help_Pro_customize_validate_email')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_customize_validate_numeric')) {
-  function Chat_Help_Pro_customize_validate_numeric($validity, $value, $wp_customize)
+if (! function_exists('Ta_Forms_customize_validate_numeric')) {
+  function Ta_Forms_customize_validate_numeric($validity, $value, $wp_customize)
   {
 
     if (! is_numeric($value)) {
@@ -134,8 +134,8 @@ if (! function_exists('Chat_Help_Pro_customize_validate_numeric')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_customize_validate_required')) {
-  function Chat_Help_Pro_customize_validate_required($validity, $value, $wp_customize)
+if (! function_exists('Ta_Forms_customize_validate_required')) {
+  function Ta_Forms_customize_validate_required($validity, $value, $wp_customize)
   {
 
     if (empty($value)) {
@@ -154,8 +154,8 @@ if (! function_exists('Chat_Help_Pro_customize_validate_required')) {
  * @version 1.0.0
  *
  */
-if (! function_exists('Chat_Help_Pro_customize_validate_url')) {
-  function Chat_Help_Pro_customize_validate_url($validity, $value, $wp_customize)
+if (! function_exists('Ta_Forms_customize_validate_url')) {
+  function Ta_Forms_customize_validate_url($validity, $value, $wp_customize)
   {
 
     if (! filter_var($value, FILTER_VALIDATE_URL)) {

@@ -4589,7 +4589,7 @@
     }
   });
 
-  $.Chat_Help_Pro_deps = {
+  $.Ta_Forms_deps = {
 
     createRuleset: function() {
       return new Ruleset();

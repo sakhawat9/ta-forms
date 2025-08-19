@@ -12,8 +12,8 @@
 
 use ThemeAtelier\TaForms\Admin\Framework\Classes\TaForms;
 
-if (! class_exists('Chat_Help_Pro_Abstract')) {
-  abstract class Chat_Help_Pro_Abstract
+if (! class_exists('Ta_Forms_Abstract')) {
+  abstract class Ta_Forms_Abstract
   {
 
     public $abstract   = '';
@@ -25,7 +25,7 @@ if (! class_exists('Chat_Help_Pro_Abstract')) {
       // Collect output css and typography
       if (! empty($this->args['output_css']) || ! empty($this->args['enqueue_webfont'])) {
         add_action('wp_enqueue_scripts', array($this, 'collect_output_css_and_typography'), 10);
-        TaForms::$css = apply_filters("Chat_Help_Pro_{$this->unique}_output_css", TaForms::$css, $this);
+        TaForms::$css = apply_filters("Ta_Forms_{$this->unique}_output_css", TaForms::$css, $this);
       }
     }
 
@@ -45,7 +45,7 @@ if (! class_exists('Chat_Help_Pro_Abstract')) {
           $field_type   = (! empty($field['type'])) ? $field['type'] : '';
           $field_output = (! empty($field['output'])) ? $field['output'] : '';
           $field_check  = ($field_type === 'typography' || $field_output) ? true : false;
-          $field_class  = 'Chat_Help_Pro_Field_' . $field_type;
+          $field_class  = 'Ta_Forms_Field_' . $field_type;
 
 
           if ($field_type === 'section_tab') {

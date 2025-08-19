@@ -1,7 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
 
-if ( ! function_exists( 'Chat_Help_Pro_get_google_fonts' ) ) {
-  function Chat_Help_Pro_get_google_fonts() {
+if ( ! function_exists( 'Ta_Forms_get_google_fonts' ) ) {
+  function Ta_Forms_get_google_fonts() {
     return [
       'ABeeZee'=>[['normal','italic'],['latin','latin-ext']],
       'Abel'=>[['normal'],['latin']],

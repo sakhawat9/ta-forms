@@ -4,8 +4,8 @@
 //
 // IcoFont Icons
 //
-if (!function_exists('Chat_Help_Pro_get_default_icons')) {
-  function Chat_Help_Pro_get_default_icons()
+if (!function_exists('Ta_Forms_get_default_icons')) {
+  function Ta_Forms_get_default_icons()
   {
     return array(
       array(
