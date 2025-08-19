@@ -47,16 +47,16 @@ class OffersView
                 echo '<td>' . esc_html($email);
 
                 if ('verified' === $row->verify_status) {
-                    echo ' <span class="difs_email_verification_done">' . esc_html__('Verified', 'ta-forms') . '</span>';
+                    echo ' <span class="ta_forms_email_verification_done">' . esc_html__('Verified', 'ta-forms') . '</span>';
                 } elseif ('pending' === $row->verify_status) {
-                    echo ' <span class="difs_email_verification_pending">' . esc_html__('Pending Verification', 'ta-forms') . '</span>';
+                    echo ' <span class="ta_forms_email_verification_pending">' . esc_html__('Pending Verification', 'ta-forms') . '</span>';
                     // Resend link: points to admin action or AJAX handler for resending
                     $resend_url = add_query_arg([
                         'page' => 'ta-forms',
                         'action' => 'resend_verification',
                         'offer_id' => $row->id,
                     ], admin_url('admin.php'));
-                    echo ' - <a href="' . esc_url($resend_url) . '" title="' . esc_attr__('Send the verification link to the bidder again.', 'ta-forms') . '" class="difs_email_verification_resend">' . esc_html__('Resend', 'ta-forms') . '</a>';
+                    echo ' - <a href="' . esc_url($resend_url) . '" title="' . esc_attr__('Send the verification link to the bidder again.', 'ta-forms') . '" class="ta_forms_email_verification_resend">' . esc_html__('Resend', 'ta-forms') . '</a>';
                 }
 
                 '</td>';

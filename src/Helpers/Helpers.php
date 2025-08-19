@@ -235,50 +235,6 @@ class Helpers
 		}
 	}
 
-	public static function fields_data($form_fields, $formData)
-	{
-		// Initialize an array to store field values
-		$fields_data = [];
-		$format = [];
-		$field_index = 1;
-
-		foreach ($form_fields as $field_id => $form_field) {
-			switch ($field_id) {
-				case 'full_name':
-					$fields_data['ta_forms_name'] = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'email_address':
-					$fields_data['ta_forms_email'] = sanitize_email($formData['ta_forms_email'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'subject':
-					$fields_data['ta_forms_subject'] = sanitize_text_field($formData['ta_forms_subject'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'phone_mobile':
-					$fields_data['ta_forms_phone'] = sanitize_text_field($formData['ta_forms_phone'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'offer':
-					$fields_data['ta_forms_offer'] = sanitize_text_field($formData['ta_forms_offer'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'proposal':
-					$fields_data['ta_forms_proposal'] = sanitize_textarea_field($formData['ta_forms_proposal'] ?? '');
-					$format[] = '%s';
-					break;
-			}
-
-			$field_index++;
-		}
-
-		return [
-			'fields_data' => $fields_data,
-			'format' => $format
-		];
-	}
-
 	/**
 	 * Generates the HTML form for the Ta Forms plugin.
 	 *

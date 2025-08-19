@@ -146,9 +146,7 @@ class Frontend
         }
         $contact_form  = get_post_meta($form_id, 'ta-forms', true);
         $form_fields   = $contact_form['form_fields'] ?? '';
-
-        $fields_data = Helpers::fields_data($form_fields, $formData);
-
+        
         // Sanitize user input
         $name      = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
         $email     = sanitize_email($formData['ta_forms_email'] ?? get_option('admin_email'));
@@ -176,7 +174,7 @@ class Frontend
         $ta_forms_recaptcha_error_decription = $options['ta-forms-recaptcha-error-description'] ?? '';
         $ta_forms_recaptcha_error_okay       = $options['ta-forms-recaptcha-error-okay'] ?? '';
 
-        $variables = ['{ta_forms_name}', '{ta_forms_email}', '{ta_forms_subject}', '{ta_forms_proposal}', '{ta_forms_phone}', '{ta_forms_offer}', '{ta_forms_date}', '{ta_forms_ip}', '{ta_forms_siteURL}'];
+        $variables = ['{name}', '{email}', '{subject}', '{proposal}', '{phone}', '{offer}', '{date}', '{ip}', '{siteURL}'];
         $values = [$name, $email, $subject, $proposal, $phone, $offer, $date, $ip, $siteURL];
 
         // Replace placeholders in the email template
@@ -193,15 +191,14 @@ class Frontend
 
         $newUserInfo = [
             'ip'         => $ip,
-            'referrer'   => $_SERVER['HTTP_REFERER'] ?? '',
-            'page_url'   => $_POST['page_url'] ?? '',       // added via hidden input
+            'page_url'   => $_POST['page_url'] ?? '',
             'country'    => $geoData['country_name'] ?? '',
             'countryCode' => $geoData['country'] ?? '',
             'city'       => $geoData['city'] ?? '',
             'region'     => $geoData['region'] ?? '',
             'latitude'   => $geoData['latitude'] ?? '',
             'longitude'  => $geoData['longitude'] ?? '',
-            'currency'   => $geoData['currency'] ?? '',     // use `currency`, not `currency_name`
+            'currency'   => $geoData['currency'] ?? '',
             'isp'        => $geoData['org'] ?? '',
         ];
 

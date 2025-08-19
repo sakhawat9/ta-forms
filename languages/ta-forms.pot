@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-19 07:26+0000\n"
+"POT-Creation-Date: 2025-08-19 09:16+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -66,11 +66,11 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/Frontend/Frontend.php:236, src/Helpers/Helpers.php:64
+#: src/Frontend/Frontend.php:233, src/Helpers/Helpers.php:64
 msgid "Verify Your Email"
 msgstr ""
 
-#: src/Frontend/Frontend.php:239, src/Helpers/Helpers.php:66
+#: src/Frontend/Frontend.php:236, src/Helpers/Helpers.php:66
 msgid ""
 "Hello %s,\n"
 "\n"
@@ -314,27 +314,27 @@ msgstr ""
 msgid "Type redirect custom url."
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:35
+#: src/Admin/Views/Notifications.php:33
 msgid "Notifications"
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:41
+#: src/Admin/Views/Notifications.php:39
 msgid "Email Notification Subject"
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:42
+#: src/Admin/Views/Notifications.php:40
 msgid "Type subject for the email notification."
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:48
+#: src/Admin/Views/Notifications.php:46
 msgid "Email Notification Body"
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:62
+#: src/Admin/Views/Notifications.php:60
 msgid "Email(s) to Notify"
 msgstr ""
 
-#: src/Admin/Views/Notifications.php:63
+#: src/Admin/Views/Notifications.php:61
 msgid "Enter the email address(es) that will receive a notification for each pending proposal. For multiple emails, use comma between these."
 msgstr ""
 
