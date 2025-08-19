@@ -14,7 +14,7 @@ class OffersView
     public static function ta_forms_offers_view()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'ta_forms_offers';
+        $table_name = $wpdb->prefix . 'ta_forms_offers_1';
 
         // Fetch offers
         $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY ta_forms_date DESC");

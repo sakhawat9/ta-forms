@@ -46,58 +46,23 @@ class Helpers
 		$this->create_offers_table();
 	}
 
-		public function create_offers_table()
+	public function create_offers_table()
 	{
 		global $wpdb;
+		$table_name = $wpdb->prefix . 'ta_forms_offers_1';
+		$charset_collate = $wpdb->get_charset_collate();
 
-		// Define the table name with the WordPress table prefix
-		$table_name = $wpdb->prefix . 'ta_forms_offers';
+		$sql = "CREATE TABLE $table_name (
+        id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+        field LONGTEXT NOT NULL,
+        meta LONGTEXT NOT NULL,
+        form VARCHAR(255) DEFAULT '' NOT NULL,
+        form_id BIGINT(20) DEFAULT 0 NOT NULL,
+        widget_id BIGINT(20) DEFAULT 0 NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
 
-		// SQL to create the table
-		$sql = "
-			CREATE TABLE $table_name (
-			ta_forms_id BIGINT(20) UNSIGNED AUTO_INCREMENT,
-			ta_forms_name TEXT NOT NULL,
-			ta_forms_email VARCHAR(255) NOT NULL,
-			ta_forms_subject TEXT NOT NULL,
-			ta_forms_phone TEXT NOT NULL,
-			ta_forms_offer INT(11) NOT NULL,
-			ta_forms_proposal TEXT NOT NULL,
-			ta_forms_ip VARCHAR(100) DEFAULT NULL,
-			ta_forms_currency VARCHAR(20) CHARACTER SET utf8 NOT NULL,
-			ta_forms_domain VARCHAR(250) CHARACTER SET utf8 NOT NULL,
-			ta_forms_referrer VARCHAR(250) CHARACTER SET utf8 NOT NULL,
-			ta_forms_http_referrer VARCHAR(250) CHARACTER SET utf8 NOT NULL,
-			ta_forms_verify_email VARCHAR(250) CHARACTER SET utf8 NOT NULL,
-			ta_forms_verify_phone VARCHAR(250) CHARACTER SET utf8 NOT NULL,
-			ta_forms_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-			ta_forms_device VARCHAR(100) DEFAULT NULL,
-			ta_forms_browser VARCHAR(100) DEFAULT NULL,
-			ta_forms_platform VARCHAR(100) DEFAULT NULL,
-			ta_forms_os VARCHAR(100) DEFAULT NULL,
-			ta_forms_screen VARCHAR(50) DEFAULT NULL,
-			ta_forms_language VARCHAR(50) DEFAULT NULL,
-			ta_forms_vendor VARCHAR(100) DEFAULT NULL,
-			ta_forms_url VARCHAR(255) DEFAULT NULL,
-			ta_forms_country_code VARCHAR(10) DEFAULT NULL,
-			ta_forms_country VARCHAR(100) DEFAULT NULL,
-			ta_forms_city VARCHAR(100) DEFAULT NULL,
-			ta_forms_region VARCHAR(100) DEFAULT NULL,
-			ta_forms_timezone VARCHAR(100) DEFAULT NULL,
-			ta_forms_timezone_gmt VARCHAR(50) DEFAULT NULL,
-			ta_forms_latitude DECIMAL(10,6) DEFAULT NULL,
-			ta_forms_longitude DECIMAL(10,6) DEFAULT NULL,
-			ta_forms_isp VARCHAR(150) DEFAULT NULL,
-			ta_forms_organization VARCHAR(150) DEFAULT NULL,
-			ta_forms_user_id BIGINT(20) UNSIGNED DEFAULT NULL,
-			ta_forms_user_first_name VARCHAR(150) DEFAULT NULL,
-			ta_forms_user_last_name VARCHAR(150) DEFAULT NULL,
-			ta_forms_user_email VARCHAR(255) DEFAULT NULL,
-			ta_forms_user_phone VARCHAR(100) DEFAULT NULL,
-			PRIMARY KEY (ta_forms_id)
-		) " . $wpdb->get_charset_collate() . ";";
-
-		// Use dbDelta to create the table
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}

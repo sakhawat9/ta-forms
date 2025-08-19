@@ -130,6 +130,20 @@ class Frontend
         // Retrieve necessary form data
         $form_id       = sanitize_text_field($_POST['form_id'] ?? '');
         $userInfo = isset($_POST['userInfo']) ? (array) $_POST['userInfo'] : [];
+        $current_user_id    = get_current_user_id();
+        if ($current_user_id) {
+            $current_user = get_userdata($current_user_id);
+            if ($current_user) {
+                $extraUserData = [
+                    'wp_user_id'    => $current_user->ID,
+                    'wp_username'   => $current_user->user_login,
+                    'wp_first_name' => get_user_meta($current_user->ID, 'first_name', true),
+                    'wp_last_name'  => get_user_meta($current_user->ID, 'last_name', true),
+                    'wp_email'      => $current_user->user_email,
+                ];
+                $userInfo = array_merge($userInfo, $extraUserData);
+            }
+        }
         $contact_form  = get_post_meta($form_id, 'ta-forms', true);
         $form_fields   = $contact_form['form_fields'] ?? '';
 
@@ -144,8 +158,6 @@ class Frontend
         $proposal  = sanitize_text_field($formData['ta_forms_proposal'] ?? '');
         $date      = date('F j, Y, H:i (h:i A) (\G\M\T O)');
         $ip        = esc_sql(sanitize_text_field($_SERVER['REMOTE_ADDR']));
-        $browser        = sanitize_text_field($userInfo['browser'] ?? '');
-        $device        = sanitize_text_field($userInfo['device'] ?? '');
         $siteURL   = get_site_url();
 
         $ta_forms_target_mail = $contact_form['submission_email_notification_to'] ?? '';
@@ -173,6 +185,29 @@ class Frontend
 
         $recaptcha_validation = Helpers::ta_forms_recaptcha_validation($form_fields);
 
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $ip = sanitize_text_field($ip);
+
+        $response = wp_remote_get("https://ipapi.co/{$ip}/json/");
+        $geoData  = !is_wp_error($response) ? json_decode(wp_remote_retrieve_body($response), true) : [];
+
+        $newUserInfo = [
+            'ip'         => $ip,
+            'referrer'   => $_SERVER['HTTP_REFERER'] ?? '',
+            'page_url'   => $_POST['page_url'] ?? '',       // added via hidden input
+            'country'    => $geoData['country_name'] ?? '',
+            'countryCode' => $geoData['country'] ?? '',
+            'city'       => $geoData['city'] ?? '',
+            'region'     => $geoData['region'] ?? '',
+            'latitude'   => $geoData['latitude'] ?? '',
+            'longitude'  => $geoData['longitude'] ?? '',
+            'currency'   => $geoData['currency'] ?? '',     // use `currency`, not `currency_name`
+            'isp'        => $geoData['org'] ?? '',
+        ];
+
+        $userInfo = array_merge($userInfo, $newUserInfo);
+
+
         // Send email using wp_mail()
         if ($recaptcha_validation) {
             if (wp_mail($ta_forms_target_mail, $submission_email_subject, $email_body, $headers)) {
@@ -181,32 +216,19 @@ class Frontend
                 $verification_link  = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
 
                 global $wpdb;
-                $tableUsers = $wpdb->prefix . 'ta_forms_offers';
+                $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
 
-                // Save user data in database
-                $fieldsData = $fields_data['fields_data'];
-                $fieldsData = array_merge($fieldsData, [
-                    'ta_forms_ip'            => $ip,
-                    // 'ta_forms_browser'      => $browser,
-                    'ta_forms_device'       => $device,
-                    // 'ta_forms_os'           => sanitize_text_field($userInfo['os'] ?? ''),
-                    'ta_forms_screen'       => sanitize_text_field($userInfo['screen'] ?? ''),
-                    'ta_forms_language'     => sanitize_text_field($userInfo['language'] ?? ''),
-                    'ta_forms_country'      => sanitize_text_field($userInfo['country'] ?? ''),
-                    'ta_forms_city'         => sanitize_text_field($userInfo['city'] ?? ''),
-                    'ta_forms_region'       => sanitize_text_field($userInfo['region'] ?? ''),
-                    'ta_forms_latitude'     => sanitize_text_field($userInfo['latitude'] ?? ''),
-                    'ta_forms_longitude'    => sanitize_text_field($userInfo['longitude'] ?? ''),
-                    'ta_forms_isp'          => sanitize_text_field($userInfo['isp'] ?? ''),
-                    'ta_forms_timezone'     => sanitize_text_field($userInfo['timezone'] ?? ''),
-                    'ta_forms_verify_email'  => $verification_token,
-                ]);
-
-                $formats = $fields_data['format'] ?? [];
-                $formats = array_merge($formats, ['%s', '%s']); // Ensure correct format
-
-
-                $insert = $wpdb->insert($tableUsers, $fieldsData, $formats);
+                $wpdb->insert(
+                    $tableUsers,
+                    [
+                        'field'     => maybe_serialize($formData),
+                        'meta'      => maybe_serialize($userInfo),
+                        'form'      => sanitize_text_field($_POST['form'] ?? 'formychat'),
+                        'form_id'   => intval($_POST['form_id'] ?? 0),
+                        'widget_id' => intval($_POST['widget_id'] ?? 0),
+                    ],
+                    ['%s', '%s', '%s', '%d', '%d']
+                );
 
                 // Send verification email
                 $verification_subject = __('Verify Your Email', 'ta-forms');

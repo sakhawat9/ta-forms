@@ -20,65 +20,99 @@
       const formData = $(this).serialize();
       const formId = $form.data("form_id");
 
-      let userData = {
-  device: /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "Desktop",
-  browser: navigator.userAgent,                 // full browser string
-  platform: navigator.platform,                 // MacIntel, Win32, etc.
-  os: navigator.appVersion,                     // OS info (rough)
-  screen: screen.width + "x" + screen.height,   // screen size
-  language: navigator.language,                 // en-GB, en-US, etc.
-  vendor: navigator.vendor,                     // Google Inc., Apple, etc.
-  url: window.location.href,                    // current page
-  referrer: document.referrer,                  // referrer
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // e.g. Asia/Dhaka
-};
-console.log('userData', userData);
+      function getBrowserName() {
+        const userAgent = navigator.userAgent;
 
-      $.ajax({
-        url: frontend_scripts.ajax_url,
-        type: "post",
-        data: {
-          action: "ta_forms_send_email",
-          data: formData,
-          form_id: formId,
-          nonce: frontend_scripts.nonce,
-          userInfo: userData,
-        },
-        success: function (response) {
-          console.log('response', response);
-          
-          if (response.data.type === "success") {
-            if (response.data.redirect) {
-              window.location.href = response.data.redirect;
-              $form.trigger("reset");
+        if (userAgent.indexOf("Firefox") > -1) {
+          return "Firefox";
+        } else if (userAgent.indexOf("SamsungBrowser") > -1) {
+          return "Samsung Internet";
+        } else if (
+          userAgent.indexOf("Opera") > -1 ||
+          userAgent.indexOf("OPR") > -1
+        ) {
+          return "Opera";
+        } else if (userAgent.indexOf("Edg") > -1) {
+          return "Edge";
+        } else if (userAgent.indexOf("Chrome") > -1) {
+          return "Chrome";
+        } else if (userAgent.indexOf("Safari") > -1) {
+          return "Safari";
+        } else {
+          return "Unknown";
+        }
+      }
+
+      async function getUserData() {
+        // Basic browser & device info
+        let userData = {
+          device: /Mobi|Android/i.test(navigator.userAgent)
+            ? "Mobile"
+            : "Desktop",
+          browser: getBrowserName(), // function from earlier
+          platform: navigator.platform,
+          screen: screen.width + "x" + screen.height,
+          language: navigator.language,
+          vendor: navigator.vendor,
+          url: window.location.href,
+          referrer: document.referrer,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone_gmt: new Date().toString().match(/\(.*\)/)[0], // e.g. (GMT+06:00)
+        };
+
+        return userData;
+      }
+      // Collect userData first
+      getUserData().then((userData) => {
+
+        console.log('userData', userData);
+        
+        // Now userData is defined here
+        $.ajax({
+          url: frontend_scripts.ajax_url,
+          type: "post",
+          data: {
+            action: "ta_forms_send_email",
+            data: formData,
+            form_id: formId,
+            nonce: frontend_scripts.nonce,
+            userInfo: userData, // ✅ safe to use here
+          },
+          success: function (response) {
+            console.log("response", response);
+            if (response.data.type === "success") {
+              if (response.data.redirect) {
+                window.location.href = response.data.redirect;
+                $form.trigger("reset");
+              } else {
+                Swal.fire({
+                  icon: "success",
+                  title: response.data.title,
+                  text: response.data.description,
+                  timer: 2000,
+                  showConfirmButton: false,
+                }).then(function () {
+                  $form.trigger("reset");
+                });
+              }
             } else {
               Swal.fire({
-                icon: "success",
+                icon: "error",
                 title: response.data.title,
-                text: response.data.description,
-                timer: 2000,
-                showConfirmButton: false,
-              }).then(function () {
-                $form.trigger("reset");
+                text: `${response.data.title}\n${response.data.description}`,
+                confirmButtonText: `${response.data.okay}`,
               });
             }
-          } else {
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
             Swal.fire({
               icon: "error",
-              title: response.data.title,
-              text: `${response.data.title}\n${response.data.description}`,
-              confirmButtonText: `${response.data.okay}`,
+              title: "Error",
+              text: errorThrown,
+              confirmButtonText: "OK",
             });
-          }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: errorThrown,
-            confirmButtonText: "OK",
-          });
-        },
+          },
+        });
       });
     });
   });
