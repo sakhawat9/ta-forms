@@ -183,28 +183,6 @@ class Frontend
 
         $recaptcha_validation = Helpers::ta_forms_recaptcha_validation($form_fields);
 
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        $ip = sanitize_text_field($ip);
-
-        $response = wp_remote_get("https://ipapi.co/{$ip}/json/");
-        $geoData  = !is_wp_error($response) ? json_decode(wp_remote_retrieve_body($response), true) : [];
-
-        $newUserInfo = [
-            'ip'         => $ip,
-            'page_url'   => $_POST['page_url'] ?? '',
-            'country'    => $geoData['country_name'] ?? '',
-            'countryCode' => $geoData['country'] ?? '',
-            'city'       => $geoData['city'] ?? '',
-            'region'     => $geoData['region'] ?? '',
-            'latitude'   => $geoData['latitude'] ?? '',
-            'longitude'  => $geoData['longitude'] ?? '',
-            'currency'   => $geoData['currency'] ?? '',
-            'isp'        => $geoData['org'] ?? '',
-        ];
-
-        $userInfo = array_merge($userInfo, $newUserInfo);
-
-
         // Send email using wp_mail()
         if ($recaptcha_validation) {
             if (wp_mail($ta_forms_target_mail, $submission_email_subject, $email_body, $headers)) {

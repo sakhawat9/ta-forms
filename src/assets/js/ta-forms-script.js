@@ -1,5 +1,16 @@
 (function ($) {
   "use strict";
+  async function userInformation() {
+    const url = "https://ipwhois.app/json/";
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      localStorage.setItem("ta_form_user_information", JSON.stringify(result));
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+  userInformation();
 
   // Wrap entire code inside foreach for each .ta_forms class element
   $(".ta_forms").each(function () {
@@ -43,76 +54,67 @@
         }
       }
 
-      async function getUserData() {
-        // Basic browser & device info
-        let userData = {
-          device: /Mobi|Android/i.test(navigator.userAgent)
-            ? "Mobile"
-            : "Desktop",
-          browser: getBrowserName(), // function from earlier
-          platform: navigator.platform,
-          screen: screen.width + "x" + screen.height,
-          language: navigator.language,
-          vendor: navigator.vendor,
-          url: window.location.href,
-          referrer: document.referrer,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          timezone_gmt: new Date().toString().match(/\(.*\)/)[0], // e.g. (GMT+06:00)
-        };
+      let userData = {
+        device: /Mobi|Android/i.test(navigator.userAgent)
+          ? "Mobile"
+          : "Desktop",
+        browser: getBrowserName(), // function from earlier
+        platform: navigator.platform,
+        screen: screen.width + "x" + screen.height,
+        language: navigator.language,
+        vendor: navigator.vendor,
+        url: window.location.href,
+        referrer: document.referrer,
+      };
 
-        return userData;
-      }
-      // Collect userData first
-      getUserData().then((userData) => {
+      const taFormUserInfo = localStorage.getItem("ta_form_user_information");
+      const ipInfo = taFormUserInfo ? JSON.parse(taFormUserInfo) : {};
+      const userInfo = { ...userData, ...ipInfo };
 
-        console.log('userData', userData);
-        
-        // Now userData is defined here
-        $.ajax({
-          url: frontend_scripts.ajax_url,
-          type: "post",
-          data: {
-            action: "ta_forms_send_email",
-            data: formData,
-            form_id: formId,
-            nonce: frontend_scripts.nonce,
-            userInfo: userData, // ✅ safe to use here
-          },
-          success: function (response) {
-            console.log("response", response);
-            if (response.data.type === "success") {
-              if (response.data.redirect) {
-                window.location.href = response.data.redirect;
-                $form.trigger("reset");
-              } else {
-                Swal.fire({
-                  icon: "success",
-                  title: response.data.title,
-                  text: response.data.description,
-                  timer: 2000,
-                  showConfirmButton: false,
-                }).then(function () {
-                  $form.trigger("reset");
-                });
-              }
+      // Now userData is defined here
+      $.ajax({
+        url: frontend_scripts.ajax_url,
+        type: "post",
+        data: {
+          action: "ta_forms_send_email",
+          data: formData,
+          form_id: formId,
+          nonce: frontend_scripts.nonce,
+          userInfo,
+        },
+        success: function (response) {
+          if (response.data.type === "success") {
+            if (response.data.redirect) {
+              window.location.href = response.data.redirect;
+              $form.trigger("reset");
             } else {
               Swal.fire({
-                icon: "error",
+                icon: "success",
                 title: response.data.title,
-                text: `${response.data.title}\n${response.data.description}`,
-                confirmButtonText: `${response.data.okay}`,
+                text: response.data.description,
+                timer: 2000,
+                showConfirmButton: false,
+              }).then(function () {
+                $form.trigger("reset");
               });
             }
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
+          } else {
             Swal.fire({
               icon: "error",
-              title: "Error",
-              text: errorThrown,
-              confirmButtonText: "OK",
+              title: response.data.title,
+              text: `${response.data.title}\n${response.data.description}`,
+              confirmButtonText: `${response.data.okay}`,
             });
-          },
-        });
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorThrown,
+            confirmButtonText: "OK",
+          });
+        },
       });
     });
   });
