@@ -146,7 +146,7 @@ class Frontend
         }
         $contact_form  = get_post_meta($form_id, 'ta-forms', true);
         $form_fields   = $contact_form['form_fields'] ?? '';
-        
+
         // Sanitize user input
         $name      = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
         $email     = sanitize_email($formData['ta_forms_email'] ?? get_option('admin_email'));
@@ -195,7 +195,7 @@ class Frontend
 
                 $results = $wpdb->get_results("SELECT * FROM $tableUsers ORDER BY created_at DESC");
                 foreach ($results as $row) {
-                    if('verified' === $row->verify_status) {
+                    if ('verified' === $row->verify_status) {
                         $verify_status = 'verified';
                     } else {
                         $verify_status = 'pending';
@@ -211,27 +211,27 @@ class Frontend
                         'form_id'   => intval($_POST['form_id'] ?? 0),
                         'widget_id' => intval($_POST['widget_id'] ?? 0),
                         'verify_email' => $verification_token,
-                        'verify_status'=> $verify_status,
+                        'verify_status' => $verify_status,
                     ],
                     ['%s', '%s', '%s', '%d', '%d', '%s', '%s']
                 );
 
-                // Send verification email
-                $verification_subject = __('Verify Your Email', 'ta-forms');
+                if ('pending' === $verify_status) {
+                    // Send verification email
+                    $verification_subject = __('Verify Your Email', 'ta-forms');
+                    $verification_body = sprintf(
+                        __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
+                        $name,
+                        $verification_link,
+                        get_bloginfo('name')
+                    );
 
-                $verification_body = sprintf(
-                    __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
-                    $name,
-                    $verification_link,
-                    get_bloginfo('name')
-                );
+                    $headers = [
+                        'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+                    ];
 
-                $headers = [
-                    'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
-                ];
-
-                wp_mail($email, $verification_subject, $verification_body, $headers);
-
+                    wp_mail($email, $verification_subject, $verification_body, $headers);
+                }
                 // Handle redirection after saving data
                 wp_send_json_success([
                     'type'        => 'success',
