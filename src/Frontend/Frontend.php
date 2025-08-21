@@ -193,6 +193,15 @@ class Frontend
                 global $wpdb;
                 $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
 
+                $results = $wpdb->get_results("SELECT * FROM $tableUsers ORDER BY created_at DESC");
+                foreach ($results as $row) {
+                    if('verified' === $row->verify_status) {
+                        $verify_status = 'verified';
+                    } else {
+                        $verify_status = 'pending';
+                    }
+                }
+
                 $wpdb->insert(
                     $tableUsers,
                     [
@@ -202,7 +211,7 @@ class Frontend
                         'form_id'   => intval($_POST['form_id'] ?? 0),
                         'widget_id' => intval($_POST['widget_id'] ?? 0),
                         'verify_email' => $verification_token,
-                        'verify_status'=> 'pending',
+                        'verify_status'=> $verify_status,
                     ],
                     ['%s', '%s', '%s', '%d', '%d', '%s', '%s']
                 );
@@ -222,7 +231,6 @@ class Frontend
                 ];
 
                 wp_mail($email, $verification_subject, $verification_body, $headers);
-
 
                 // Handle redirection after saving data
                 wp_send_json_success([
