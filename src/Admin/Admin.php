@@ -129,7 +129,7 @@ class Admin
     public function delete_offer(\WP_REST_Request $request)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'ta_forms_offers_1';
+        $table_name = $wpdb->prefix . 'ta_forms_offers';
         $id = intval($request['id']);
 
         $deleted = $wpdb->delete($table_name, ['id' => $id], ['%d']);
@@ -148,7 +148,7 @@ class Admin
     public function get_offer_by_id(\WP_REST_Request $request)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'ta_forms_offers_1';
+        $table_name = $wpdb->prefix . 'ta_forms_offers';
         $id = intval($request['id']);
         $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_name} WHERE id = %d", $id), ARRAY_A);
 
@@ -175,7 +175,7 @@ class Admin
     public function get_offers(\WP_REST_Request $request)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'ta_forms_offers_1'; // table name
+        $table_name = $wpdb->prefix . 'ta_forms_offers'; // table name
         $results = $wpdb->get_results("SELECT * FROM {$table_name}", ARRAY_A);
 
         foreach ($results as &$row) {

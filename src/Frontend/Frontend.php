@@ -128,8 +128,9 @@ class Frontend
         parse_str($_POST['data'], $formData);
 
         // Retrieve necessary form data
-        $form_id       = sanitize_text_field($_POST['form_id'] ?? '');
-        $userInfo = isset($_POST['userInfo']) ? (array) $_POST['userInfo'] : [];
+        $form_id       = intval($_POST['form_id'] ?? '');
+        $userInfo = isset($_POST['userInfo']) && is_array($_POST['userInfo']) ? array_map('sanitize_text_field', $_POST['userInfo']) : [];
+
         $current_user_id    = get_current_user_id();
         if ($current_user_id) {
             $current_user = get_userdata($current_user_id);
@@ -191,7 +192,7 @@ class Frontend
                 $verification_link  = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
 
                 global $wpdb;
-                $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+                $tableUsers = $wpdb->prefix . 'ta_forms_offers';
 
                 $results = $wpdb->get_results("SELECT * FROM $tableUsers ORDER BY created_at DESC");
                 $formDataEmail = $formData['ta_forms_email'] ?? '';
@@ -207,6 +208,8 @@ class Frontend
                     }
                 }
 
+                // print_r($verification_token);
+
                 $wpdb->insert(
                     $tableUsers,
                     [
@@ -217,7 +220,7 @@ class Frontend
                         'verify_email' => $verification_token,
                         'verify_status' => $verify_status,
                     ],
-                    ['%s', '%s', '%s', '%d', '%d', '%s', '%s']
+                    ['%s', '%s', '%s', '%d', '%s', '%s']
                 );
 
                 if ('pending' === $verify_status) {

@@ -51,7 +51,7 @@ class Helpers
 	public function handle_resend_verification() {
     if (is_admin() && isset($_GET['action'], $_GET['offer_id']) && $_GET['action'] === 'resend_verification') {
         global $wpdb;
-        $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+        $tableUsers = $wpdb->prefix . 'ta_forms_offers';
         $offer_id = intval($_GET['offer_id']);
         $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE id = %d", $offer_id));
         if ($row && $row->verify_status === 'pending') {
@@ -86,7 +86,7 @@ class Helpers
 	{
 		if (isset($_GET['ta_forms_verify_email'])) {
 			global $wpdb;
-			$tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+			$tableUsers = $wpdb->prefix . 'ta_forms_offers';
 			$token = sanitize_text_field($_GET['ta_forms_verify_email']);
 
 			$row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE verify_email = %s", $token));
@@ -109,7 +109,7 @@ class Helpers
 	public function create_offers_table()
 	{
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'ta_forms_offers_1';
+		$table_name = $wpdb->prefix . 'ta_forms_offers';
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (

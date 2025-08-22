@@ -14,7 +14,7 @@ class OffersView
     public static function ta_forms_offers_view()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'ta_forms_offers_1';
+        $table_name = $wpdb->prefix . 'ta_forms_offers';
 
 
         // Fetch offers
