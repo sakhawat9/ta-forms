@@ -51,7 +51,7 @@ class Helpers
 	public function handle_resend_verification() {
     if (is_admin() && isset($_GET['action'], $_GET['offer_id']) && $_GET['action'] === 'resend_verification') {
         global $wpdb;
-        $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+        $tableUsers = $wpdb->prefix . 'ta_forms_offers';
         $offer_id = intval($_GET['offer_id']);
         $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE id = %d", $offer_id));
         if ($row && $row->verify_status === 'pending') {
@@ -86,7 +86,7 @@ class Helpers
 	{
 		if (isset($_GET['ta_forms_verify_email'])) {
 			global $wpdb;
-			$tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+			$tableUsers = $wpdb->prefix . 'ta_forms_offers';
 			$token = sanitize_text_field($_GET['ta_forms_verify_email']);
 
 			$row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE verify_email = %s", $token));
@@ -109,7 +109,7 @@ class Helpers
 	public function create_offers_table()
 	{
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'ta_forms_offers_1';
+		$table_name = $wpdb->prefix . 'ta_forms_offers';
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
@@ -118,7 +118,6 @@ class Helpers
         meta LONGTEXT NOT NULL,
         form VARCHAR(255) DEFAULT '' NOT NULL,
         form_id BIGINT(20) DEFAULT 0 NOT NULL,
-        widget_id BIGINT(20) DEFAULT 0 NOT NULL,
 		verify_email VARCHAR(255) DEFAULT '' NOT NULL,
     	verify_status VARCHAR(20) DEFAULT 'pending' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -138,6 +137,7 @@ class Helpers
 	{
 		wp_register_style('sweetalert2', TAFORMS_ASSETS . 'css/sweetalert2' . $this->min . '.css', array(), '1.0.0', 'all');
 		wp_register_style('ico-font', TAFORMS_ASSETS . 'css/icofont' . $this->min . '.css', array(), '1.0.0', 'all');
+		wp_register_style('ta-forms-admin-style', TAFORMS_URL . '/src/Admin/assets/css/index-Do5K9s_K.css', array(), TAFORMS_VERSION, 'all');
 		wp_register_style('ta-forms-style', TAFORMS_ASSETS . 'css/ta-forms-style' . $this->min . '.css', array(), TAFORMS_VERSION, 'all');
 
 		wp_register_script('sweetalert2', TAFORMS_ASSETS . 'js/sweetalert2' . $this->min . '.js', array('jquery'), TAFORMS_VERSION, true);
@@ -233,50 +233,6 @@ class Helpers
 		} else {
 			return true;
 		}
-	}
-
-	public static function fields_data($form_fields, $formData)
-	{
-		// Initialize an array to store field values
-		$fields_data = [];
-		$format = [];
-		$field_index = 1;
-
-		foreach ($form_fields as $field_id => $form_field) {
-			switch ($field_id) {
-				case 'full_name':
-					$fields_data['ta_forms_name'] = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'email_address':
-					$fields_data['ta_forms_email'] = sanitize_email($formData['ta_forms_email'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'subject':
-					$fields_data['ta_forms_subject'] = sanitize_text_field($formData['ta_forms_subject'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'phone_mobile':
-					$fields_data['ta_forms_phone'] = sanitize_text_field($formData['ta_forms_phone'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'offer':
-					$fields_data['ta_forms_offer'] = sanitize_text_field($formData['ta_forms_offer'] ?? '');
-					$format[] = '%s';
-					break;
-				case 'proposal':
-					$fields_data['ta_forms_proposal'] = sanitize_textarea_field($formData['ta_forms_proposal'] ?? '');
-					$format[] = '%s';
-					break;
-			}
-
-			$field_index++;
-		}
-
-		return [
-			'fields_data' => $fields_data,
-			'format' => $format
-		];
 	}
 
 	/**

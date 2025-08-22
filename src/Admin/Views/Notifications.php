@@ -25,10 +25,8 @@ class Notifications
      */
     public static function options($prefix)
     {
-
         //
         // Notifications section.
-        //
         TaForms::createSection(
             $prefix,
             array(

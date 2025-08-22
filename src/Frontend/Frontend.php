@@ -128,8 +128,9 @@ class Frontend
         parse_str($_POST['data'], $formData);
 
         // Retrieve necessary form data
-        $form_id       = sanitize_text_field($_POST['form_id'] ?? '');
-        $userInfo = isset($_POST['userInfo']) ? (array) $_POST['userInfo'] : [];
+        $form_id       = intval($_POST['form_id'] ?? 0);
+        $userInfo = isset($_POST['userInfo']) && is_array($_POST['userInfo']) ? array_map('sanitize_text_field', $_POST['userInfo']) : [];
+
         $current_user_id    = get_current_user_id();
         if ($current_user_id) {
             $current_user = get_userdata($current_user_id);
@@ -147,8 +148,6 @@ class Frontend
         $contact_form  = get_post_meta($form_id, 'ta-forms', true);
         $form_fields   = $contact_form['form_fields'] ?? '';
 
-        $fields_data = Helpers::fields_data($form_fields, $formData);
-
         // Sanitize user input
         $name      = sanitize_text_field($formData['ta_forms_full_name'] ?? '');
         $email     = sanitize_email($formData['ta_forms_email'] ?? get_option('admin_email'));
@@ -156,7 +155,7 @@ class Frontend
         $phone     = sanitize_text_field($formData['ta_forms_phone'] ?? '');
         $offer     = sanitize_text_field($formData['ta_forms_offer'] ?? '');
         $proposal  = sanitize_text_field($formData['ta_forms_proposal'] ?? '');
-        $date      = date('F j, Y, H:i (h:i A) (\G\M\T O)');
+        $date      = current_time('F j, Y, H:i (h:i A) (\G\M\T O)');
         $ip        = esc_sql(sanitize_text_field($_SERVER['REMOTE_ADDR']));
         $siteURL   = get_site_url();
 
@@ -176,7 +175,7 @@ class Frontend
         $ta_forms_recaptcha_error_decription = $options['ta-forms-recaptcha-error-description'] ?? '';
         $ta_forms_recaptcha_error_okay       = $options['ta-forms-recaptcha-error-okay'] ?? '';
 
-        $variables = ['{ta_forms_name}', '{ta_forms_email}', '{ta_forms_subject}', '{ta_forms_proposal}', '{ta_forms_phone}', '{ta_forms_offer}', '{ta_forms_date}', '{ta_forms_ip}', '{ta_forms_siteURL}'];
+        $variables = ['{name}', '{email}', '{subject}', '{proposal}', '{phone}', '{offer}', '{date}', '{ip}', '{siteURL}'];
         $values = [$name, $email, $subject, $proposal, $phone, $offer, $date, $ip, $siteURL];
 
         // Replace placeholders in the email template
@@ -184,29 +183,6 @@ class Frontend
         $headers = ['From: ' . $name . ' <' . $email . '>'];
 
         $recaptcha_validation = Helpers::ta_forms_recaptcha_validation($form_fields);
-
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        $ip = sanitize_text_field($ip);
-
-        $response = wp_remote_get("https://ipapi.co/{$ip}/json/");
-        $geoData  = !is_wp_error($response) ? json_decode(wp_remote_retrieve_body($response), true) : [];
-
-        $newUserInfo = [
-            'ip'         => $ip,
-            'referrer'   => $_SERVER['HTTP_REFERER'] ?? '',
-            'page_url'   => $_POST['page_url'] ?? '',       // added via hidden input
-            'country'    => $geoData['country_name'] ?? '',
-            'countryCode' => $geoData['country'] ?? '',
-            'city'       => $geoData['city'] ?? '',
-            'region'     => $geoData['region'] ?? '',
-            'latitude'   => $geoData['latitude'] ?? '',
-            'longitude'  => $geoData['longitude'] ?? '',
-            'currency'   => $geoData['currency'] ?? '',     // use `currency`, not `currency_name`
-            'isp'        => $geoData['org'] ?? '',
-        ];
-
-        $userInfo = array_merge($userInfo, $newUserInfo);
-
 
         // Send email using wp_mail()
         if ($recaptcha_validation) {
@@ -216,39 +192,53 @@ class Frontend
                 $verification_link  = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
 
                 global $wpdb;
-                $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
+                $tableUsers = $wpdb->prefix . 'ta_forms_offers';
+
+                $results = $wpdb->get_results("SELECT * FROM $tableUsers ORDER BY created_at DESC");
+                $formDataEmail = $formData['ta_forms_email'] ?? '';
+                $verify_status = 'pending';
+
+                foreach ($results as $row) {
+                    $fields = maybe_unserialize($row->field);
+                    if (isset($fields['ta_forms_email']) && $fields['ta_forms_email'] === $formDataEmail) {
+                        if ($row->verify_status === 'verified') {
+                            $verify_status = 'verified';
+                            break; // No need to check further
+                        }
+                    }
+                }
+
+                // print_r($verification_token);
 
                 $wpdb->insert(
                     $tableUsers,
                     [
                         'field'     => maybe_serialize($formData),
                         'meta'      => maybe_serialize($userInfo),
-                        'form'      => sanitize_text_field($_POST['form'] ?? 'formychat'),
-                        'form_id'   => intval($_POST['form_id'] ?? 0),
-                        'widget_id' => intval($_POST['widget_id'] ?? 0),
+                        'form'      => sanitize_text_field($_POST['form'] ?? 'ta-forms'),
+                        'form_id'   => $form_id,
                         'verify_email' => $verification_token,
-                        'verify_status'=> 'pending',
+                        'verify_status' => $verify_status,
                     ],
-                    ['%s', '%s', '%s', '%d', '%d', '%s', '%s']
+                    ['%s', '%s', '%s', '%d', '%s', '%s']
                 );
 
-                // Send verification email
-                $verification_subject = __('Verify Your Email', 'ta-forms');
+                if ('pending' === $verify_status) {
+                    // Send verification email
+                    $verification_subject = __('Verify Your Email', 'ta-forms');
+                    $verification_body = sprintf(
+                        __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
+                        $name,
+                        $verification_link,
+                        get_bloginfo('name')
+                    );
 
-                $verification_body = sprintf(
-                    __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
-                    $name,
-                    $verification_link,
-                    get_bloginfo('name')
-                );
+                    $headers = [
+                        'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+                    ];
 
-                $headers = [
-                    'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
-                ];
-
-                wp_mail($email, $verification_subject, $verification_body, $headers);
-
-
+                    wp_mail($email, $verification_subject, $verification_body, $headers);
+                }
                 // Handle redirection after saving data
                 wp_send_json_success([
                     'type'        => 'success',

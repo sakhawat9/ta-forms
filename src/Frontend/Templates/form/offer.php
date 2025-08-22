@@ -21,5 +21,5 @@ $input_label = isset($form_options['input_label']) ? $form_options['input_label'
         <label class="form-label" for="ta_forms_offer"><span><?php echo esc_html($label);
                                                         echo $required ? '<span>*</span>' : ''; ?></span></label>
     <?php } ?>
-    <input title="<?php echo esc_attr($custom_validation_message) ?>" type="number" id="ta_forms_offer" name="ta_forms_offer" <?php echo esc_html($required); ?> placeholder="<?php echo esc_html($placeholder); ?>" />
+    <input title="<?php echo esc_attr($custom_validation_message) ?>" type="number" id="ta_forms_offer" name="ta_forms_offer" value="39" <?php echo esc_html($required); ?> placeholder="<?php echo esc_html($placeholder); ?>" />
 </div>
