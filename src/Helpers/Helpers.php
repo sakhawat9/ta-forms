@@ -118,7 +118,6 @@ class Helpers
         meta LONGTEXT NOT NULL,
         form VARCHAR(255) DEFAULT '' NOT NULL,
         form_id BIGINT(20) DEFAULT 0 NOT NULL,
-        widget_id BIGINT(20) DEFAULT 0 NOT NULL,
 		verify_email VARCHAR(255) DEFAULT '' NOT NULL,
     	verify_status VARCHAR(20) DEFAULT 'pending' NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

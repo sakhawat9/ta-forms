@@ -194,11 +194,16 @@ class Frontend
                 $tableUsers = $wpdb->prefix . 'ta_forms_offers_1';
 
                 $results = $wpdb->get_results("SELECT * FROM $tableUsers ORDER BY created_at DESC");
+                $formDataEmail = $formData['ta_forms_email'] ?? '';
+                $verify_status = 'pending';
+
                 foreach ($results as $row) {
-                    if ('verified' === $row->verify_status) {
-                        $verify_status = 'verified';
-                    } else {
-                        $verify_status = 'pending';
+                    $fields = maybe_unserialize($row->field);
+                    if (isset($fields['ta_forms_email']) && $fields['ta_forms_email'] === $formDataEmail) {
+                        if ($row->verify_status === 'verified') {
+                            $verify_status = 'verified';
+                            break; // No need to check further
+                        }
                     }
                 }
 
@@ -209,7 +214,6 @@ class Frontend
                         'meta'      => maybe_serialize($userInfo),
                         'form'      => sanitize_text_field($_POST['form'] ?? 'formychat'),
                         'form_id'   => intval($_POST['form_id'] ?? 0),
-                        'widget_id' => intval($_POST['widget_id'] ?? 0),
                         'verify_email' => $verification_token,
                         'verify_status' => $verify_status,
                     ],
