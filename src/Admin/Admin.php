@@ -207,11 +207,9 @@ class Admin
     {
 ?>
         <script type="module">
-            import RefreshRuntime from 'http://localhost:7000/@react-refresh'
+            import RefreshRuntime from 'http://localhost:7500/@react-refresh'
             RefreshRuntime.injectIntoGlobalHook(window);
             window.$RefreshReg$ = () => {};
-            // window.$RefreshSig$ = () => (type) => type;
-            // window.__vite_plugin_react_preamble_installed__ = true;
         </script>
     <?php
     }
@@ -228,7 +226,6 @@ class Admin
             wp_dequeue_style('common');
             wp_deregister_style('common-css');
 
-
             add_action('admin_print_scripts', function () {
                 echo wp_print_inline_script_tag(
                     'window.taForms = ' . wp_json_encode([
@@ -238,13 +235,20 @@ class Admin
                 );
             });
 
-            // Load your main entry file as module
-            wp_enqueue_script_module(
-                'ta-forms-admin',
-                'http://localhost:7000/src/main.jsx',
-                array('vite-client'),
+            wp_enqueue_script(
+                'ta-forms-admin-script',
+                plugin_dir_url(__FILE__) . 'assets/js/index.js',
+                array(),
                 time(),
+                true
             );
+
+            // wp_enqueue_script_module(
+            //     'ta-forms-admin',
+            //     'http://localhost:7500/src/main.jsx',
+            //     array('vite-client'),
+            //     time(),
+            // );
         }
     }
 

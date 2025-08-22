@@ -137,6 +137,7 @@ class Helpers
 	{
 		wp_register_style('sweetalert2', TAFORMS_ASSETS . 'css/sweetalert2' . $this->min . '.css', array(), '1.0.0', 'all');
 		wp_register_style('ico-font', TAFORMS_ASSETS . 'css/icofont' . $this->min . '.css', array(), '1.0.0', 'all');
+		wp_register_style('ta-forms-admin-style', TAFORMS_URL . '/src/Admin/assets/css/index-Do5K9s_K.css', array(), TAFORMS_VERSION, 'all');
 		wp_register_style('ta-forms-style', TAFORMS_ASSETS . 'css/ta-forms-style' . $this->min . '.css', array(), TAFORMS_VERSION, 'all');
 
 		wp_register_script('sweetalert2', TAFORMS_ASSETS . 'js/sweetalert2' . $this->min . '.js', array('jquery'), TAFORMS_VERSION, true);

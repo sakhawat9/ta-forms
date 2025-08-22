@@ -128,7 +128,7 @@ class Frontend
         parse_str($_POST['data'], $formData);
 
         // Retrieve necessary form data
-        $form_id       = intval($_POST['form_id'] ?? '');
+        $form_id       = intval($_POST['form_id'] ?? 0);
         $userInfo = isset($_POST['userInfo']) && is_array($_POST['userInfo']) ? array_map('sanitize_text_field', $_POST['userInfo']) : [];
 
         $current_user_id    = get_current_user_id();
@@ -155,7 +155,7 @@ class Frontend
         $phone     = sanitize_text_field($formData['ta_forms_phone'] ?? '');
         $offer     = sanitize_text_field($formData['ta_forms_offer'] ?? '');
         $proposal  = sanitize_text_field($formData['ta_forms_proposal'] ?? '');
-        $date      = date('F j, Y, H:i (h:i A) (\G\M\T O)');
+        $date      = current_time('F j, Y, H:i (h:i A) (\G\M\T O)');
         $ip        = esc_sql(sanitize_text_field($_SERVER['REMOTE_ADDR']));
         $siteURL   = get_site_url();
 
@@ -215,8 +215,8 @@ class Frontend
                     [
                         'field'     => maybe_serialize($formData),
                         'meta'      => maybe_serialize($userInfo),
-                        'form'      => sanitize_text_field($_POST['form'] ?? 'formychat'),
-                        'form_id'   => intval($_POST['form_id'] ?? 0),
+                        'form'      => sanitize_text_field($_POST['form'] ?? 'ta-forms'),
+                        'form_id'   => $form_id,
                         'verify_email' => $verification_token,
                         'verify_status' => $verify_status,
                     ],
