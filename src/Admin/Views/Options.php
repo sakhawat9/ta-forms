@@ -26,27 +26,6 @@ class Options
      */
     public static function options($prefix)
     {
-        //
-        // Create options
-        // TaForms::createOptions($prefix, array(
-        //     'menu_title'        => esc_html__('Ta Forms Help', 'ta-forms'),
-        //     'menu_slug'         => 'ta-forms',
-        //     'menu_type'               => 'submenu',
-        //     'show_search'             => false,
-        //     'show_bar_menu'           => false,
-        //     'show_sub_menu'           => false,
-        //     'show_reset_all'          => false,
-        //     'show_footer'			  => false,
-        //     'show_all_options'		  => false,
-        //     'framework_title'   => esc_html__('Ta Forms Help', 'ta-forms'),
-        //     'admin_bar_menu_priority' => 5,
-        //     'footer_text'             => esc_html__('Thank you for using our product', 'ta-forms'),
-        //     'theme'                   => 'light',
-        //     'nav'                     => 'inline',
-        //     'framework_class'         => 'ta-forms-admin',
-        //     'class'              	  => 'ta-forms-preloader',
-        // ));
-
         TaForms::createMetabox(
             $prefix,
             array(

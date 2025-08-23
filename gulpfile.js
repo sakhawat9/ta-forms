@@ -163,7 +163,10 @@ gulp.task("cleanMinifiedCSS", function () {
 });
 gulp.task("cleanMinifiedAdminFrameworkCSS", function () {
   return gulp
-    .src(`${paths.admin_framework_css.dest}/*.min.css`, { read: false, allowEmpty: true })
+    .src(`${paths.admin_framework_css.dest}/*.min.css`, {
+      read: false,
+      allowEmpty: true,
+    })
     .pipe(clean());
 });
 // Clean only minified JavaScript files
@@ -174,7 +177,10 @@ gulp.task("cleanMinifiedJs", function () {
 });
 gulp.task("cleanMinifiedAdminFrameworkJs", function () {
   return gulp
-    .src(`${paths.admin_framework_js.dest}/*.min.js`, { read: false, allowEmpty: true })
+    .src(`${paths.admin_framework_js.dest}/*.min.js`, {
+      read: false,
+      allowEmpty: true,
+    })
     .pipe(clean());
 });
 // Minify CSS
@@ -214,9 +220,15 @@ gulp.task("minify-admin-framework-js", function () {
 // Watch for changes
 gulp.task("watch", function () {
   gulp.watch(paths.scss.src, gulp.series("cleanMinifiedCSS", "minify-css"));
-  gulp.watch(paths.admin_framework_css.src, gulp.series("cleanMinifiedAdminFrameworkCSS", "minify-admin-framework-css"));
+  gulp.watch(
+    paths.admin_framework_css.src,
+    gulp.series("cleanMinifiedAdminFrameworkCSS", "minify-admin-framework-css")
+  );
   gulp.watch(paths.js.src, gulp.series("cleanMinifiedJs", "minify-js"));
-  gulp.watch(paths.admin_framework_js.src, gulp.series("cleanMinifiedAdminFrameworkJs", "minify-admin-framework-js"));
+  gulp.watch(
+    paths.admin_framework_js.src,
+    gulp.series("cleanMinifiedAdminFrameworkJs", "minify-admin-framework-js")
+  );
   gulp.watch(paths.scss.src, gulp.series(...task_keys));
 });
 
@@ -238,7 +250,13 @@ exports.default = gulp.series(
 );
 
 exports.minifyCss = gulp.series("cleanMinifiedCSS", "minify-css");
-exports.minifyAdminFrameworkCss = gulp.series("cleanMinifiedAdminFrameworkCSS", "minify-admin-framework-css");
+exports.minifyAdminFrameworkCss = gulp.series(
+  "cleanMinifiedAdminFrameworkCSS",
+  "minify-admin-framework-css"
+);
 exports.minifyJs = gulp.series("cleanMinifiedJs", "minify-js");
-exports.minifyAdminFrameworkJs = gulp.series("cleanMinifiedAdminFrameworkJs", "minify-admin-framework-js");
+exports.minifyAdminFrameworkJs = gulp.series(
+  "cleanMinifiedAdminFrameworkJs",
+  "minify-admin-framework-js"
+);
 exports.watch = gulp.series("watch");

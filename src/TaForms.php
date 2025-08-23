@@ -215,6 +215,9 @@ class TaForms
 		$plugin_helpers = new Helpers($this->get_plugin_slug(), $this->get_version());
 		$this->loader->add_action('wp_loaded', $plugin_helpers, 'register_all_scripts');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+
+		$this->loader->add_filter('manage_ta-forms_posts_columns', $plugin_admin, 'filter_forms_admin_column');
+		$this->loader->add_action('manage_ta-forms_posts_custom_column', $plugin_admin, 'display_forms_admin_fields', 10, 2);
 	}
 
 	// Plugin settings in plugin list

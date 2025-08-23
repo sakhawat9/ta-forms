@@ -48,39 +48,40 @@ class Helpers
 		$this->create_offers_table();
 	}
 
-	public function handle_resend_verification() {
-    if (is_admin() && isset($_GET['action'], $_GET['offer_id']) && $_GET['action'] === 'resend_verification') {
-        global $wpdb;
-        $tableUsers = $wpdb->prefix . 'ta_forms_offers';
-        $offer_id = intval($_GET['offer_id']);
-        $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE id = %d", $offer_id));
-        if ($row && $row->verify_status === 'pending') {
-            $field = maybe_unserialize($row->field);
-            $name = $field['ta_forms_full_name'] ?? '';
-            $email = $field['ta_forms_email'] ?? '';
-            $verification_token = $row->verify_email;
-            $verification_link = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
+	public function handle_resend_verification()
+	{
+		if (is_admin() && isset($_GET['action'], $_GET['offer_id']) && $_GET['action'] === 'resend_verification') {
+			global $wpdb;
+			$tableUsers = $wpdb->prefix . 'ta_forms_offers';
+			$offer_id = intval($_GET['offer_id']);
+			$row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tableUsers WHERE id = %d", $offer_id));
+			if ($row && $row->verify_status === 'pending') {
+				$field = maybe_unserialize($row->field);
+				$name = $field['ta_forms_full_name'] ?? '';
+				$email = $field['ta_forms_email'] ?? '';
+				$verification_token = $row->verify_email;
+				$verification_link = add_query_arg(['ta_forms_verify_email' => $verification_token], home_url('/verify-email/'));
 
-            $subject = __('Verify Your Email', 'ta-forms');
-            $body = sprintf(
-                __("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
-                $name,
-                $verification_link,
-                get_bloginfo('name')
-            );
-            $headers = [
-                'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
-            ];
-            wp_mail($email, $subject, $body, $headers);
+				$subject = __('Verify Your Email', 'ta-forms');
+				$body = sprintf(
+					__("Hello %s,\n\nThank you for your proposal. Please verify your email by clicking the link below:\n\n%s\n\nBest Regards,\n%s", 'ta-forms'),
+					$name,
+					$verification_link,
+					get_bloginfo('name')
+				);
+				$headers = [
+					'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+				];
+				wp_mail($email, $subject, $body, $headers);
 
-            wp_redirect(admin_url('admin.php?page=ta-forms&resend=success'));
-            exit;
-        } else {
-            wp_redirect(admin_url('admin.php?page=ta-forms&resend=fail'));
-            exit;
-        }
-    }
-}
+				wp_redirect(admin_url('admin.php?page=ta-forms&resend=success'));
+				exit;
+			} else {
+				wp_redirect(admin_url('admin.php?page=ta-forms&resend=fail'));
+				exit;
+			}
+		}
+	}
 
 	public function handle_email_verification()
 	{
@@ -321,5 +322,18 @@ class Helpers
 			}
 		}
 		echo '</form></div>';
+	}
+
+	public static function ta_forms_string()
+	{
+		return [
+			'site_url' => get_site_url(),
+			'name' => esc_html__('Name', 'ta-forms'),
+			'email' => esc_html__('Email', 'ta-forms'),
+			'phone' => esc_html__('Phone', 'ta-forms'),
+			'message' => esc_html__('Message Test', 'ta-forms'),
+			'contact_form_offers' => esc_html__('Contact Form Offers', 'ta-forms'),
+			'pending_verification' => esc_html__('Pending Verification', 'ta-forms'),
+		];
 	}
 }

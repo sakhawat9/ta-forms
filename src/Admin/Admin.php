@@ -15,6 +15,7 @@ namespace ThemeAtelier\TaForms\Admin;
 
 use ThemeAtelier\TaForms\Admin\Offers\OffersView;
 use ThemeAtelier\TaForms\Admin\Views\Options;
+use ThemeAtelier\TaForms\Helpers\Helpers;
 use ThemeAtelier\TaForms\Helpers\Pro_Cron;
 
 /**
@@ -76,6 +77,59 @@ class Admin
 
         add_action('init', [$this, 'add_cors_header']);
         add_action('rest_api_init', [$this, 'register_rest_routes']);
+    }
+
+    /**
+     * Add forms admin columns.
+     *
+     * @since 2.0.0
+     * @return statement
+     */
+    public function filter_forms_admin_column()
+    {
+
+        $admin_columns['cb']         = '<input type="checkbox" />';
+        $admin_columns['title']      = esc_html__('Title', 'ta-forms');
+        $admin_columns['shortcode']  = esc_html__('Shortcode', 'ta-forms');
+        $admin_columns['date']       = esc_html__('Date', 'ta-forms');
+
+        return $admin_columns;
+    }
+
+    /**
+     * Display admin columns for the forms.
+     *
+     * @param mix    $column The columns.
+     * @param string $post_id The post ID.
+     * @return void
+     */
+    public function display_forms_admin_fields($column, $post_id)
+    {
+        switch ($column) {
+            case 'shortcode':
+                $column_field = '<input  class="ta_forms_input" style="width: 230px;padding: 4px 8px;cursor: pointer;" type="text" onClick="this.select();" readonly="readonly" value="[ta_forms id=&quot;' . esc_attr($post_id) . '&quot;]"/> <div class="ta-forms-after-copy-text"><i class="icofont-check-circled"></i> ' . esc_html('Shortcode Copied to Clipboard!', 'ta-forms') . ' </div>';
+
+                $allowed_tags = array(
+                    'input' => array(
+                        'class' => true,
+                        'style' => true,
+                        'type' => true,
+                        'onclick' => true,
+                        'readonly' => true,
+                        'value' => true,
+                    ),
+                    'div' => array(
+                        'class' => true,
+                    ),
+                    'i' => array(
+                        'class' => true,
+                    ),
+                );
+
+                // Output with KSES sanitization
+                echo wp_kses($column_field, $allowed_tags);
+                break;
+        } // end switch.
     }
 
     public function register_rest_routes()
@@ -210,6 +264,7 @@ class Admin
             import RefreshRuntime from 'http://localhost:7500/@react-refresh'
             RefreshRuntime.injectIntoGlobalHook(window);
             window.$RefreshReg$ = () => {};
+            window.taFormsString = <?php echo json_encode(Helpers::ta_forms_string()); ?>;
         </script>
     <?php
     }
@@ -236,7 +291,7 @@ class Admin
             });
 
             wp_enqueue_script(
-                'ta-forms-admin-script',
+                'ta-forms-admin',
                 plugin_dir_url(__FILE__) . 'assets/js/index.js',
                 array(),
                 time(),
